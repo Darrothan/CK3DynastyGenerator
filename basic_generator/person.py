@@ -1,5 +1,5 @@
 import random
-import constants
+import basic_generator.constants as constants
 
 def weighted_sample_without_replacement(population, weights, k):
     """Pick up to k distinct items with weights; no replacement."""

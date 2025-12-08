@@ -1,6 +1,6 @@
 # main.py
 import person
-from gedcom_export import export_to_gedcom
+from basic_generator.gedcom_export import export_to_gedcom
 from print_basic_family_info import print_basic_family_info
 
 def main():
