@@ -25,7 +25,7 @@ def main():
 
         choice = input("\nDo you wish to save or regenerate? (y = save, n = regenerate): ").strip().lower()
         if choice == 'y':
-            filepath = f"{name}_tree.ged"
+            filepath = f"test_family_ged_exports/{name}_tree.ged"
             export_to_gedcom(patriarch, filepath, root_surname=last_name, end_year=end_date)
             print(f"\nGEDCOM written to: {filepath}")
             break
