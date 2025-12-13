@@ -6,7 +6,8 @@ from config.other_constants import CHILD_BY_MOTHER_AGE_PD, MOTHER_FERTILITY_WIND
 from services.utils import convert_years_to_days_duration, convert_calendar_years_to_days
 
 """
-Takes in start and stop ages of the mother and a k number of children to generate and returns a sorted list of birth days (ages) for the children.
+Takes in start and stop ages of the mother and a k number of children to generate and returns a sorted list of absolute birth days for the children.
+This mirrors draw_children_birth_years_simple: returns absolute days with proper sibling gap enforcement.
 """
 def draw_children_birth_years_exact_k(
     *,
@@ -14,6 +15,7 @@ def draw_children_birth_years_exact_k(
     k: int,
     start_age: int,
     stop_age: int,
+    mother_birth_year: int,
 ) -> List[int]:
     """
     Draw exactly k child birth ages within [start_age, stop_age], enforcing a minimum
@@ -90,7 +92,9 @@ def draw_children_birth_years_exact_k(
         # This should be extremely rare unless floating-point underflow occurs.
         raise RuntimeError(f"Sampling failed: expected {k} children, got {len(chosen)}")
 
-    return generate_birth_days_from_birth_years(sorted(chosen), rng)
+    # Convert ages to actual birth years and then to absolute days with gap enforcement
+    birth_years = [mother_birth_year + age for age in sorted(chosen)]
+    return generate_birth_days_from_birth_years(birth_years, rng)
 
 """
 Takes in start and stop ages of the mother and a child_multiplier (the approximat number of children to generate) and returns a sortd list of birth days (ages) for the children.
@@ -189,3 +193,96 @@ def generate_birth_days_from_birth_years(birth_years: List[int], rng: random.Ran
         birth_days.append(absolute_day)
 
     return sorted(birth_days)
+
+
+def calculate_fertility_window(father: 'Person', mother: 'Person', start_age: int, max_age: int) -> tuple[int, int]:
+    """
+    Calculate the effective fertility window for a mother, accounting for:
+    - Maximum fertility age
+    - Mother's lifespan
+    - Father's lifespan (can't have children after father dies)
+    
+    Returns (start_age, stop_age) tuple.
+    """
+    mother_death_age = mother.death_year - mother.birth_year
+    father_death_age = father.death_year - mother.birth_year  # father's death in mother's-age years
+    
+    stop_age_eff = min(max_age, mother_death_age, father_death_age)
+    
+    return (start_age, stop_age_eff)
+
+
+def max_children_with_gap(start_age: int, stop_age: int, min_gap_years: int) -> int:
+    """
+    Calculate maximum number of children that can fit in an age range
+    given a minimum gap between siblings.
+    """
+    if stop_age < start_age:
+        return 0
+    span = stop_age - start_age
+    return 1 + (span // min_gap_years)
+
+
+def apply_exposure_scaling(rng: random.Random, baseline_k: int, start_age: int, stop_age: int, 
+                           full_window_start: int, full_window_end: int) -> int:
+    """
+    Apply exposure scaling: reduce the number of children proportionally
+    if the effective fertility window is smaller than the full window.
+    Uses binomial thinning.
+    """
+    full_years = (full_window_end - full_window_start + 1)
+    eff_years = (stop_age - start_age + 1)
+    exposure_ratio = eff_years / full_years
+    
+    # Clamp ratio to [0, 1]
+    r = max(0.0, min(1.0, exposure_ratio))
+    # Binomial thinning: each potential child survives with probability r
+    return sum(1 for _ in range(baseline_k) if rng.random() < r)
+
+
+def draw_children_with_exposure(
+    *,
+    rng: random.Random,
+    father: 'Person',
+    mother: 'Person',
+    end_date: int,
+    baseline_k: int,
+    min_gap_years: int = MINIMUM_GAP_BETWEEN_SIBLINGS_YEARS,
+    max_fertility_age: int = MOTHER_FERTILITY_WINDOW[1],
+) -> List[int]:
+    """
+    Draw absolute birth days for children, accounting for:
+    - Exposure scaling (reduced fertility if window is constrained)
+    - Gap constraint between siblings
+    - End date (no children born after simulation ends)
+    
+    Returns list of absolute birth days.
+    """
+    start_age = MOTHER_FERTILITY_WINDOW[0]
+    start_age_eff, stop_age_eff = calculate_fertility_window(father, mother, start_age, max_fertility_age)
+    
+    # No exposure => no children
+    if stop_age_eff < start_age_eff or baseline_k <= 0:
+        return []
+    
+    # Apply exposure scaling
+    k_realized = apply_exposure_scaling(
+        rng, baseline_k, start_age_eff, stop_age_eff,
+        start_age, max_fertility_age
+    )
+    
+    # Cap by gap constraint feasibility
+    k_max = max_children_with_gap(start_age_eff, stop_age_eff, min_gap_years)
+    k_realized = min(k_realized, k_max)
+    
+    if k_realized <= 0:
+        return []
+    
+    # Get birth days with gap enforcement
+    return draw_children_birth_years_exact_k(
+        rng=rng,
+        k=k_realized,
+        start_age=start_age_eff,
+        stop_age=stop_age_eff,
+        mother_birth_year=mother.birth_year,
+    )

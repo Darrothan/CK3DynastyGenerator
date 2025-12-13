@@ -39,12 +39,12 @@ class PersonFactory:
             person.name = f"{father.name}_Son"
         else:
             person.name = "Founder_Son"
-        try:
-            if father is not None and end_date - father.date_of_birth < self.cfg.playable_character_age_max * DAYS_IN_YEAR:
-                person.skip_generation = True
-        except Exception:
-            # If father or config fields are missing, silently continue; this is a placeholder behavior.
-            pass
+        
+        # Skip generation for males age 30 or less at end of simulation
+        person_age_at_end = end_date - person.date_of_birth
+        if person_age_at_end < self.cfg.playable_character_age_max * DAYS_IN_YEAR:
+            person.skip_generation = True
+        
         return person
     
     def create_female(self, birth_date: int, end_date: int, father: Person = None, mother: Person = None) -> Person:

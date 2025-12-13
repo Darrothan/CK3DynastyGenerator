@@ -22,18 +22,29 @@ def gen_children_mainline(*, fcfg: FertilityConfig, father: Person, end_date: in
     mother_age_at_fathers_death = father.death_year - father.birth_year - father_age_offset
     # In other iterations where there is a mother, we will also need to contend with her own death, but this is easy because it's a stored variable
     fertility_end = min(MOTHER_FERTILITY_WINDOW[1], mother_age_at_fathers_death)  # Account for father's death
-    children_birthdays = draw_children_birth_years_exact_k(rng, 
-        num_children, start_age=MOTHER_FERTILITY_WINDOW[0], stop_age=fertility_end)
-    sons_birthdays = sorted(rng.sample(children_birthdays, k=num_mainline_sons))
+    
+    # Mother's birth year = father's birth year - father_age_offset
+    mother_birth_year = father.birth_year - father_age_offset
+    
+    # Get absolute birth days for children (already has gap enforcement built in)
+    children_birthdays = draw_children_birth_years_exact_k(
+        rng=rng,
+        k=num_children,
+        start_age=MOTHER_FERTILITY_WINDOW[0],
+        stop_age=fertility_end,
+        mother_birth_year=mother_birth_year,
+    )
+    
+    sons_birthdays = sorted(rng.sample(children_birthdays, k=min(num_mainline_sons, len(children_birthdays))))
 
-    non_main_factory = PersonFactory(cfg=SimConfig(mortality=NonMainlineMortilityConfig, fertility=fcfg), rng=rng)
-    main_factory = PersonFactory(cfg=SimConfig(mortality=MainlineMortalityConfig, fertility=fcfg), rng=rng)
+    non_main_factory = PersonFactory(cfg=SimConfig(mortality=NonMainlineMortilityConfig(), fertility=fcfg), rng=rng)
+    main_factory = PersonFactory(cfg=SimConfig(mortality=MainlineMortalityConfig(), fertility=fcfg), rng=rng)
     for birthday in sons_birthdays[:-1]:
         if birthday > end_date:
             break
         children.append(non_main_factory.create_male(birth_date=birthday, end_date=end_date, father=father))
     # Last son is the mainline heir
-    if sons_birthdays[-1] <= end_date:
+    if sons_birthdays and sons_birthdays[-1] <= end_date:
         children.append(main_factory.create_male(birth_date=sons_birthdays[-1], end_date=end_date, father=father))
     for child in children[:-1]:
         child.skip_generation = True

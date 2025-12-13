@@ -35,21 +35,20 @@ def generate_dynasty(
 
 	founder: Person = factory.create_male(birth_date=generate_calendar_day_in_year(birth_year, rng), end_date=end_date)
 	# Outer list is generations, inner list is people in that generation
-	dynasty: List[List['Person']] = [[], [founder]]
-	generation = 1
+	dynasty: List[List['Person']] = [[founder]]
+	max_generations = 1000  # Limit to prevent infinite loops
+	generation = 0
 
-	while generation < len(dynasty):
-		person_ptr = 0
-
-		while person_ptr < len(dynasty[generation]):
-			father: Person = dynasty[generation][person_ptr]
+	while generation < len(dynasty) and generation < max_generations:
+		next_generation: List[Person] = []
+		
+		for father in dynasty[generation]:
 			if father.skip_generation:
-				person_ptr += 1
 				continue
 
 			if father.date_of_birth < male_only_start_date:
 				# Mainline strategy
-				father.children = gen_children_mainline(cfg=cfg, father=father, end_date=end_date, rng=rng)
+				father.children = gen_children_mainline(fcfg=cfg.fertility, father=father, end_date=end_date, rng=rng)
 			elif father.date_of_birth < normal_start_date:
 				# Male-only strategy
 				father.children = gen_children_male_only(cfg=cfg, father=father, end_date=end_date, rng=rng)
@@ -57,7 +56,12 @@ def generate_dynasty(
 				# Normal strategy
 				father.children = gen_children_normal(cfg=cfg, father=father, end_date=end_date, rng=rng)
 			
-			person_ptr += 1
+			next_generation.extend(father.children)
+		
+		# Only add the next generation if there are children
+		if next_generation:
+			dynasty.append(next_generation)
+		
 		generation += 1
 
 	return dynasty
