@@ -1,6 +1,6 @@
 # main.py
 from strategies.gen_children_mainline import dynasty_children
-from services.simulation import generate_family
+from services.simulation import generate_dynasty
 from config.mortality_config import MortalityConfig
 from config.fertility_config import FertilityConfig
 from config.sim_config import SimConfig
@@ -17,7 +17,7 @@ fcfg = FertilityConfig(
 cfg = SimConfig(mortality=mcfg, fertility=fcfg)
 
 
-father = generate_family(
+father = generate_dynasty(
     parent_name="Zhang",
     birth_position=1,
     birth_year=1100,

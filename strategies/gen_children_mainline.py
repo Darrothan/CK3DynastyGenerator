@@ -2,45 +2,40 @@ from typing import List
 import random
 
 from models.person import Person
+from services.factory import PersonFactory
 from config.sim_config import SimConfig
-from services.utils import (
-    sample_key_by_weights,
-    weighted_sample_without_replacement,
-    draw_age_at_death,
-)
+from config.fertility_config import FertilityConfig
+from config.mortality_config import MainlineMortalityConfig, NonMainlineMortilityConfig
+from config.other_constants import NUM_MAINLINE_CHILD_PD, FATHER_AGE_OFFSET_PD, MOTHER_FERTILITY_WINDOW
+from services.utils import sample_key_by_weights
+from services.children_gen_utils import draw_children_birth_years_exact_k
 
+"""
+This strategy generates only the single surviving line of male heirs.
+"""
+def gen_children_mainline(*, fcfg: FertilityConfig, father: Person, end_date: int, rng: random.Random) -> List[Person]:
+    children: List[Person] = []
+    num_children = sample_key_by_weights(fcfg.num_children_pd, rng)
+    num_mainline_sons = sample_key_by_weights(NUM_MAINLINE_CHILD_PD, rng)
+    father_age_offset = sample_key_by_weights(FATHER_AGE_OFFSET_PD, rng)
 
-def dynasty_children(*, father: Person, end_year: int, cfg: SimConfig, rng: random.Random) -> List[Person]:
-    fcfg = cfg.fertility
-    age_offset = sample_key_by_weights(fcfg.father_age_offset_pd, rng)
-    mother_first = sample_key_by_weights(fcfg.mother_first_child_age_pd, rng)
-    attempted = sample_key_by_weights(fcfg.children_attempted_pd, rng)
+    mother_age_at_fathers_death = father.death_year - father.birth_year - father_age_offset
+    # In other iterations where there is a mother, we will also need to contend with her own death, but this is easy because it's a stored variable
+    fertility_end = min(MOTHER_FERTILITY_WINDOW[1], mother_age_at_fathers_death)  # Account for father's death
+    children_birthdays = draw_children_birth_years_exact_k(rng, 
+        num_children, start_age=MOTHER_FERTILITY_WINDOW[0], stop_age=fertility_end)
+    sons_birthdays = sorted(rng.sample(children_birthdays, k=num_mainline_sons))
 
-    # clamp to mother ages >= first-child age
-    clamped = {a:p for a,p in fcfg.birth_prob_by_mother_age_pd.items() if a >= mother_first}
+    non_main_factory = PersonFactory(cfg=SimConfig(mortality=NonMainlineMortilityConfig, fertility=fcfg), rng=rng)
+    main_factory = PersonFactory(cfg=SimConfig(mortality=MainlineMortalityConfig, fertility=fcfg), rng=rng)
+    for birthday in sons_birthdays[:-1]:
+        if birthday > end_date:
+            break
+        children.append(non_main_factory.create_male(birth_date=birthday, end_date=end_date, father=father))
+    # Last son is the mainline heir
+    if sons_birthdays[-1] <= end_date:
+        children.append(main_factory.create_male(birth_date=sons_birthdays[-1], end_date=end_date, father=father))
+    for child in children[:-1]:
+        child.skip_generation = True
 
-    # sample distinct mother ages (weighted, no replacement)
-    ks, ws = list(clamped.keys()), list(clamped.values())
-    sampled_mother_ages = weighted_sample_without_replacement(ks, ws, min(attempted, len(ks)), rng)
-
-    # convert to father's ages; chronological
-    father_ages = sorted(a + age_offset for a in sampled_mother_ages)
-
-    # births within father’s life and before end_year
-    births = []
-    for i, fa in enumerate(father_ages, start=1):
-        by = father.birth_year + fa
-        if by > end_year: break
-        # if you want to enforce "before father dies", keep father's death on the Person or pass separately
-        child = Person(
-            name=f"{father.name}_Son{i}",
-            birth_year=by,
-            death_year=by + draw_age_at_death(cfg.mortality, rng),
-            is_living_at_end=(by + draw_age_at_death(cfg.mortality, rng)) > end_year,
-        )
-        births.append(child)
-    return births
-
-def family_children(*, father: Person, end_year: int, cfg: SimConfig, rng: random.Random) -> List[Person]:
-    # identical shape as dynasty_children; if differences are small, call a shared helper with a mode flag.
-    return dynasty_children(father=father, end_year=end_year, cfg=cfg, rng=rng)
+    return children

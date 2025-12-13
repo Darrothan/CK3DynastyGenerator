@@ -1,4 +1,5 @@
 from enum import Enum
 class GenerationType(Enum):
-    DYNASTY = "dynasty"
-    FAMILY = "family"
+    MAINLINE = 1
+    MALE_ONLY = 2
+    FULL = 3

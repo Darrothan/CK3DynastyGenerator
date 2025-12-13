@@ -1,28 +1,54 @@
 from __future__ import annotations
-from typing import Optional
+from typing import Optional, List
 import random
 
 from config.sim_config import SimConfig
+from config.other_constants import DAYS_IN_YEAR, MOTHER_AGE_AT_FIRST_CHILD_PD, FATHER_AGE_OFFSET_PD
 from models.person import Person
 from services.factory import PersonFactory
+from utils import generate_calendar_day_in_year, convert_calendar_days_to_years, sample_key_by_weights
+from strategies import gen_children_mainline, gen_children_normal, gen_wife
 
-
-def generate_family(
+def generate_dynasty(
 	*,
-	parent_name: str,
-	birth_position: int,
 	birth_year: int,
-	end_year: int,
+	male_only_start_date: int,
+	normal_start_date: int,
+	end_date: int,
 	cfg: SimConfig,
-	child_strategy,
 	rng: Optional[random.Random] = None,
-) -> Person:
+) -> List[List['Person']]:
 	rng = rng or random.Random()
 	factory = PersonFactory(cfg=cfg, rng=rng)
 
-	father = factory.create_male(parent_name, birth_position, birth_year, end_year)
-	father.children = child_strategy(father=father, end_year=end_year, cfg=cfg, rng=rng)
-	return father
+	founder: Person = factory.create_male(birth_date=generate_calendar_day_in_year(birth_year), end_date=end_date)
+	# Outer list is generations, inner list is people in that generation
+	dynasty: List[List['Person']] = [[], [founder]]
+	generation = 1
+
+	while generation < len(dynasty):
+		person_ptr = 0
+
+		while person_ptr < len(dynasty):
+			father: Person = dynasty[generation][person_ptr]
+			if father.skip_generation:
+				person_ptr += 1
+				continue
+
+			if father.date_of_birth < male_only_start_date:
+				# Mainline strategy
+				father.children = gen_children_mainline(cfg=cfg, father=father, end_date=end_date, rng=rng)
+			elif father.date_of_birth < normal_start_date:
+				# Male-only strategy
+				father.children = gen_children_male_only(cfg=cfg, father=father, end_date=end_date, rng=rng)
+			else:
+				# Normal strategy
+				father.children = gen_children_normal(cfg=cfg, father=father, end_date=end_date, rng=rng)
+			
+			person_ptr += 1
+		generation += 1
+
+	return dynasty
 
 
-__all__ = ["generate_family"]
+__all__ = ["generate_dynasty"]

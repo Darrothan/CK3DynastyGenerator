@@ -1,27 +1,33 @@
 from dataclasses import dataclass
 
-
+# Shouldn't be used directly
 @dataclass(frozen=True)
 class FertilityConfig:
-    father_age_offset_pd: dict[int, float]
-    mother_first_child_age_pd: dict[int, float]
-    children_attempted_pd: dict[int, float]
-    birth_prob_by_mother_age_pd: dict[int, float]
+    num_children_pd: dict[int, float]
 
-
-@dataclass(frozen=True)
 class GenerousFertilityConfig(FertilityConfig):
-    children: dict[int, float]
-    male_children: dict[int, float]
+    num_children_pd: dict[int, float] = {
+        3: 0.10,
+        4: 0.25,
+        5: 0.30,
+        6: 0.25,
+        7: 0.10,
+    }
 
-
-@dataclass(frozen=True)
 class NormalFertilityConfig(FertilityConfig):
-    children: dict[int, float]
-    male_children: dict[int, float]
+    num_children_pd: dict[int, float] = {
+        2: 0.10,
+        3: 0.25,
+        4: 0.30,
+        5: 0.25,
+        6: 0.10,
+    }
 
-
-@dataclass(frozen=True)
 class RealisticFertilityConfig(FertilityConfig):
-    children: dict[int, float]
-    male_children: dict[int, float]
+    num_children_pd: dict[int, float] = {
+        1: 0.10,
+        2: 0.25,
+        3: 0.30,
+        4: 0.25,
+        5: 0.10,
+    }
