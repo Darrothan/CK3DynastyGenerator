@@ -13,13 +13,17 @@ from strategies.gen_wife import gen_wife
 def gen_children(*, cfg: SimConfig, father: Person, end_date: int, rng: random.Random, male_only: bool = False) -> List[Person]:
     children: List[Person] = []
     num_children = sample_key_by_weights(cfg.fertility.num_children_pd, rng)
-    mother: Person = gen_wife(father=father, end_date=end_date, mother_age_cfg=cfg, rng=rng)
+    mother: Person = gen_wife(father=father, end_date=end_date, cfg=cfg, rng=rng)
 
     fertility_end = min(MOTHER_FERTILITY_WINDOW[1], 
         father.death_year - mother.birth_year, 
         mother.death_year - mother.birth_year)
-    children_birthdays: List[int] = draw_children_birth_years_exact_k(rng, 
-        num_children, start_age=MOTHER_FERTILITY_WINDOW[0], stop_age=fertility_end)
+    children_birthdays: List[int] = draw_children_birth_years_exact_k(
+        rng=rng,
+        k=num_children,
+        start_age=MOTHER_FERTILITY_WINDOW[0],
+        stop_age=fertility_end,
+    )
 
     factory = PersonFactory(cfg=cfg, rng=rng)
     for birthday in children_birthdays:

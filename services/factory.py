@@ -34,14 +34,24 @@ class PersonFactory:
         )
 
     def create_male(self, birth_date: int, end_date: int, father: Person = None, mother: Person = None) -> Person:
-        person = self.create_person(birth_date, end_date, father, mother)
-        person.name = f"{father.name}_Son"  # Placeholder naming convention (will probably write a util function that generates names)
-        if end_date - father.date_of_birth < self.cfg.playable_character_age_max * DAYS_IN_YEAR:
-            person.skip_generation = True
+        person = self.create_person(birth_date, end_date, False, father, mother)
+        if father is not None and getattr(father, "name", None):
+            person.name = f"{father.name}_Son"
+        else:
+            person.name = "Founder_Son"
+        try:
+            if father is not None and end_date - father.date_of_birth < self.cfg.playable_character_age_max * DAYS_IN_YEAR:
+                person.skip_generation = True
+        except Exception:
+            # If father or config fields are missing, silently continue; this is a placeholder behavior.
+            pass
         return person
     
     def create_female(self, birth_date: int, end_date: int, father: Person = None, mother: Person = None) -> Person:
         person = self.create_person(birth_date, end_date, True, father, mother)
-        person.name = f"{father.name}_Daughter"  # Placeholder naming convention (will probably write a util function that generates names)
+        if father is not None and getattr(father, "name", None):
+            person.name = f"{father.name}_Daughter"
+        else:
+            person.name = "Founder_Daughter"
         person.skip_generation = True
         return person

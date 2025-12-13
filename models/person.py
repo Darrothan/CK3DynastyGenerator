@@ -1,6 +1,6 @@
 from __future__ import annotations
 from dataclasses import dataclass, field
-from typing import List
+from typing import List, Optional
 
 
 @dataclass
@@ -18,9 +18,9 @@ class Person:
     sppouse: Person | None = None
 
     # Recordkeeping dates
-    date_of_birth: int
-    date_of_death: int
-    date_of_marriage: int
+    date_of_birth: Optional[int] = None
+    date_of_death: Optional[int] = None
+    date_of_marriage: Optional[int] = None
 
     # Simulator variables
     mother_age_at_first_child: int = -1

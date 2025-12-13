@@ -1,4 +1,12 @@
-from services.utils import convert_calendar_years_to_days
+"""Project constants and simple calendar helpers.
+
+Keep small calendar helpers here to avoid circular imports with
+`services.utils` which also needs constants from this module.
+"""
+
+# simple helper (kept local to avoid circular imports)
+def convert_calendar_years_to_days(year: int) -> int:
+    return DAYS_IN_YEAR * (year - 1) + 1
 
 # This is based off 1925 data so it's not super accurate for medieval times
 # MOTHER_FERTILITY_WINDOW = (16, 45)
@@ -30,7 +38,7 @@ NUM_MAINLINE_CHILD_PD = {
 }
 MINIMUM_GAP_BETWEEN_SIBLINGS_YEARS = 2
 
-MOTHER_AGE_AT_FIRST_CHILD_PD = { age : prob for age, prob in CHILD_BY_MOTHER_AGE_PD}
+MOTHER_AGE_AT_FIRST_CHILD_PD = { age: prob for age, prob in CHILD_BY_MOTHER_AGE_PD.items()}
 
 FATHER_AGE_OFFSET_PD = {
     -1: 0.05, 0: 0.1, 1: 0.2, 2: 0.3,
