@@ -18,7 +18,7 @@ def gen_wife(*, father: Person, end_date: int, cfg: SimConfig, rng: random.Rando
 
     factory = PersonFactory(cfg=cfg, rng=rng)
     wife: Person = factory.create_female(mother_birthday, end_date=end_date, father=None, mother=None)
-    wife.part_of_dynasty = False
+    wife.dynasty_name = None  # Wife is not part of the dynasty
     father.spouse = wife
     wife.spouse = father
     wife.mother_age_at_first_child = mother_age_at_first_child

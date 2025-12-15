@@ -6,6 +6,7 @@ Generates a multi-generation dynasty with customizable parameters and statistics
 
 from services.simulation import generate_dynasty
 from services.dynasty_metrics import calculate_dynasty_stats, print_dynasty_stats, print_dynasty_tree
+from services.name_manager import NameManager
 from config.mortality_config import (
     NormalMortalityConfig,
     GenerousMortalityConfig,
@@ -47,6 +48,34 @@ def get_config_preset() -> SimConfig:
             )
         else:
             print("Invalid choice. Please enter 1, 2, or 3.")
+
+
+def get_culture() -> str:
+    """Prompt user to select a culture for name generation."""
+    cultures = NameManager.get_available_cultures()
+    print("\n--- Dynasty Culture ---")
+    for i, culture in enumerate(cultures, 1):
+        print(f"{i}. {culture.capitalize()}")
+    
+    while True:
+        try:
+            choice = int(input(f"\nSelect culture (1-{len(cultures)}): ").strip())
+            if 1 <= choice <= len(cultures):
+                return cultures[choice - 1]
+            else:
+                print(f"Please enter a number between 1 and {len(cultures)}.")
+        except ValueError:
+            print("Please enter a valid number.")
+
+
+def get_dynasty_name() -> str:
+    """Prompt user to enter the dynasty name (surname)."""
+    print("\n--- Dynasty Name ---")
+    while True:
+        name = input("Enter the dynasty surname (e.g., 'Zhu', 'Smith'): ").strip()
+        if name:
+            return name
+        print("Dynasty name cannot be empty. Please try again.")
 
 
 def get_dynasty_parameters() -> Tuple[int, int, int, int]:
@@ -98,6 +127,8 @@ def main():
     while True:
         # Get configuration
         cfg = get_config_preset()
+        culture = get_culture()
+        dynasty_name = get_dynasty_name()
         birth_year, end_year, male_only_start, normal_start = get_dynasty_parameters()
         
         # Convert dates to absolute days for internal use (days since year 1)
@@ -107,7 +138,7 @@ def main():
         normal_start_days = convert_calendar_years_to_days(normal_start)
         end_days = convert_calendar_years_to_days(end_year)
         
-        print(f"\nGenerating dynasty starting {birth_year} and ending {end_year}...")
+        print(f"\nGenerating {dynasty_name} dynasty starting {birth_year} and ending {end_year}...")
         
         # Generate the dynasty
         rng = random.Random()
@@ -118,6 +149,8 @@ def main():
             end_date=end_days,
             cfg=cfg,
             rng=rng,
+            dynasty_name=dynasty_name,
+            culture=culture,
         )
         
         # Calculate and print statistics

@@ -43,6 +43,8 @@ def main():
         end_date=end_days,
         cfg=cfg,
         rng=rng,
+        dynasty_name="Test",
+        culture="chinese",
     )
     
     # Calculate and display metrics

@@ -21,9 +21,11 @@ def generate_dynasty(
 	end_date: int,
 	cfg: SimConfig,
 	rng: Optional[random.Random] = None,
+	dynasty_name: str = "Dynasty",
+	culture: str = "chinese",
 ) -> List[List['Person']]:
 	rng = rng or random.Random()
-	factory = PersonFactory(cfg=cfg, rng=rng)
+	factory = PersonFactory(cfg=cfg, rng=rng, culture=culture, dynasty_name=dynasty_name)
 
 	# import strategies here to avoid circular imports at module import time
 	from strategies import gen_children_mainline as _gcm, gen_children as _gc, gen_wife as _gw

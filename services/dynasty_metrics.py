@@ -22,10 +22,17 @@ def calculate_dynasty_stats(dynasty: List[List[Person]], end_date: int) -> dict:
     Returns:
         Dictionary containing overall and generation-level statistics
     """
+    # Find founder (first person in first non-empty generation)
+    founder_name = "Unknown"
+    for generation in dynasty:
+        if generation:
+            founder_name = generation[0].name
+            break
+    
     stats = {
         "total_generations": len(dynasty),
         "total_people": sum(len(gen) for gen in dynasty),
-        "founder_name": dynasty[1][0].name if len(dynasty) > 1 and dynasty[1] else "Unknown",
+        "founder_name": founder_name,
         "young_males_count": 0,
         "max_age_gap_overall": 0,
         "generations": [],
@@ -145,6 +152,12 @@ def print_dynasty_tree(dynasty: List[List[Person]], depth: int = 2):
         if len(person.children) > 3:
             print(f"{'  ' * (indent + 1)}... and {len(person.children) - 3} more children")
     
-    if len(dynasty) > 1 and dynasty[1]:
-        founder = dynasty[1][0]
+    # Find the founder (first person in first non-empty generation)
+    founder = None
+    for generation in dynasty:
+        if generation:
+            founder = generation[0]
+            break
+    
+    if founder:
         print_person(founder, 0, depth)

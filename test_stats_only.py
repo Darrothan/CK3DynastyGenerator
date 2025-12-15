@@ -9,27 +9,30 @@ from models.person import Person
 
 # Create minimal test dynasty
 founder = Person(
-    name="Founder",
+    given_name="Founder",
     female=False,
     birth_year=1100,
     death_year=1150,
     is_living_at_end=False,
+    dynasty_name="Test",
 )
 
 child1 = Person(
-    name="Founder_Son1",
+    given_name="Founder_Son1",
     female=False,
     birth_year=1130,
     death_year=1180,
     is_living_at_end=False,
+    dynasty_name="Test",
 )
 
 child2 = Person(
-    name="Founder_Daughter1",
+    given_name="Founder_Daughter1",
     female=True,
     birth_year=1135,
     death_year=1170,
     is_living_at_end=False,
+    dynasty_name="Test",
 )
 
 founder.children = [child1, child2]
