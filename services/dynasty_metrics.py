@@ -112,7 +112,7 @@ def print_dynasty_stats(stats: dict):
     print(f"Largest Age Gap in Generation: {stats['max_age_gap_overall']} years")
     
     print("\n" + "-" * 80)
-    print(f"{'Gen':<5} {'Size':<8} {'Males':<8} {'Females':<10} {'Mainline':<12} {'Avg Life':<12} {'Age Gap':<10} {'Young♂':<8}")
+    print(f"{'Gen':<5} {'Size':<8} {'Males':<8} {'Females':<10} {'Mainline':<12} {'Avg Life':<12} {'Age Gap':<10} {'Young M':<8}")
     print("-" * 80)
     
     for gen_info in stats["generations"]:
@@ -141,8 +141,8 @@ def print_dynasty_tree(dynasty: List[List[Person]], depth: int = 2):
             return
         
         prefix = "  " * indent + ("├─ " if indent > 0 else "")
-        living = "†" if person.death_year < 10000 else "✓"
-        gender = "♂" if not person.female else "♀"
+        living = "[D]" if person.death_year < 10000 else "[L]"
+        gender = "[M]" if not person.female else "[F]"
         
         print(f"{prefix}{person.name} {gender} ({person.birth_year}-{person.death_year}) {living}")
         
