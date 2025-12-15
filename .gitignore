@@ -1,1 +1,4 @@
 *.pyc
+
+# Ignore all gedcom files
+*.gedcom

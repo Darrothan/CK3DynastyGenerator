@@ -202,7 +202,7 @@ def main():
         if choice == "save":
             filepath = get_export_filename(dynasty_name)
             try:
-                export_to_gedcom(dynasty, filepath, end_year=end_year)
+                export_to_gedcom(dynasty, filepath, end_year=end_year, culture=culture, dynasty_name=dynasty_name)
                 print(f"\n✓ Dynasty saved to: {filepath}")
             except Exception as e:
                 import traceback

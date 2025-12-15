@@ -10,19 +10,25 @@
 1 NAME Dynasty Generator
 0 @I1@ INDI
 1 NAME John /Smith/
+2 GIVN John
+2 SURN Smith
 1 SEX M
 1 BIRT
 2 DATE ABT 1100
 1 DEAT
 2 DATE ABT 1150
+1 NOTE Age at death: 50 years
 1 FAMS @F1@
 0 @I2@ INDI
 1 NAME Jane /Smith/
+2 GIVN Jane
+2 SURN Smith
 1 SEX F
 1 BIRT
 2 DATE ABT 1125
 1 DEAT
 2 DATE ABT 1180
+1 NOTE Age at death: 55 years
 1 FAMC @F1@
 0 @F1@ FAM
 1 HUSB @I1@

@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 import random
 
 from models.person import Person
@@ -10,7 +10,7 @@ from services.children_gen_utils import draw_children_with_exposure
 from strategies.gen_wife import gen_wife
 
 
-def gen_children(*, cfg: SimConfig, father: Person, end_date: int, rng: random.Random, male_only: bool = False) -> List[Person]:
+def gen_children(*, cfg: SimConfig, father: Person, end_date: int, rng: random.Random, male_only: bool = False, factory: Optional[PersonFactory] = None) -> List[Person]:
     """
     Generate children for a father using the configured fertility settings.
     Handles exposure scaling and gap constraints internally.
@@ -32,16 +32,22 @@ def gen_children(*, cfg: SimConfig, father: Person, end_date: int, rng: random.R
         baseline_k=baseline_k,
     )
     
-    # Create child persons
-    factory = PersonFactory(cfg=cfg, rng=rng)
+    # Create child persons, preserving culture and dynasty_name
+    child_factory = PersonFactory(
+        cfg=cfg,
+        rng=rng,
+        culture=factory.culture if factory else 'chinese',
+        dynasty_name=factory.dynasty_name if factory else None,
+    ) if factory else PersonFactory(cfg=cfg, rng=rng)
+    
     for birthday in children_birthdays:
         if birthday > end_date:
             break
         if rng.random() < CHANCE_OF_SON:
-            children.append(factory.create_male(birth_date=birthday, end_date=end_date, father=father))
+            children.append(child_factory.create_male(birth_date=birthday, end_date=end_date, father=father))
         else:
             if not male_only:
-                children.append(factory.create_female(birth_date=birthday, end_date=end_date, father=father))
+                children.append(child_factory.create_female(birth_date=birthday, end_date=end_date, father=father))
     
     # Record marriage dates
     if children:
@@ -56,12 +62,12 @@ def gen_children(*, cfg: SimConfig, father: Person, end_date: int, rng: random.R
 """
 This strategy generates only sons.
 """
-def gen_children_male_only(*, cfg: SimConfig, father: Person, end_date: int, rng: random.Random) -> List[Person]:
-    return gen_children(cfg=cfg, father=father, end_date=end_date, rng=rng, male_only=True)
+def gen_children_male_only(*, cfg: SimConfig, father: Person, end_date: int, rng: random.Random, factory: Optional[PersonFactory] = None) -> List[Person]:
+    return gen_children(cfg=cfg, father=father, end_date=end_date, rng=rng, male_only=True, factory=factory)
 
 
 """
 This strategy generates both sons and daughters normally.
 """
-def gen_children_normal(*, cfg: SimConfig, father: Person, end_date: int, rng: random.Random) -> List[Person]:
-    return gen_children(cfg=cfg, father=father, end_date=end_date, rng=rng)
+def gen_children_normal(*, cfg: SimConfig, father: Person, end_date: int, rng: random.Random, factory: Optional[PersonFactory] = None) -> List[Person]:
+    return gen_children(cfg=cfg, father=father, end_date=end_date, rng=rng, factory=factory)

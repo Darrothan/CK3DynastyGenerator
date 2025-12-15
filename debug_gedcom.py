@@ -49,7 +49,7 @@ filepath = 'test_exports/debug_zhu.ged'
 print(f"\nAttempting to export to {filepath}...")
 
 try:
-    result = export_to_gedcom(dynasty, filepath, end_year=end_year)
+    result = export_to_gedcom(dynasty, filepath, end_year=end_year, culture="chinese", dynasty_name="Zhu")
     print(f"✓ Success! Exported to: {result}")
     
     # Check file size

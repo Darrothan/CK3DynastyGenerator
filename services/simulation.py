@@ -50,13 +50,13 @@ def generate_dynasty(
 
 			if father.date_of_birth < male_only_start_date:
 				# Mainline strategy
-				father.children = gen_children_mainline(fcfg=cfg.fertility, father=father, end_date=end_date, rng=rng)
+				father.children = gen_children_mainline(fcfg=cfg.fertility, father=father, end_date=end_date, rng=rng, factory=factory)
 			elif father.date_of_birth < normal_start_date:
 				# Male-only strategy
-				father.children = gen_children_male_only(cfg=cfg, father=father, end_date=end_date, rng=rng)
+				father.children = gen_children_male_only(cfg=cfg, father=father, end_date=end_date, rng=rng, factory=factory)
 			else:
 				# Normal strategy
-				father.children = gen_children_normal(cfg=cfg, father=father, end_date=end_date, rng=rng)
+				father.children = gen_children_normal(cfg=cfg, father=father, end_date=end_date, rng=rng, factory=factory)
 			
 			next_generation.extend(father.children)
 		

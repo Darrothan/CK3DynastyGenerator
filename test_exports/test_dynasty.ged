@@ -10,30 +10,42 @@
 1 NAME Dynasty Generator
 0 @I1@ INDI
 1 NAME Ānqīng /TestDynasty/
+2 GIVN Ānqīng
+2 SURN TestDynasty
 1 SEX M
 1 BIRT
-2 DATE ABT 1100
+2 DATE 24 NOV 1100
 1 DEAT
-2 DATE ABT 1143
+2 DATE 6 MAY 1143
+1 NOTE Age at death: 43 years
 1 FAMS @F1@
 0 @I2@ INDI
-1 NAME Chénān //
+1 NAME Chénān /TestDynasty/
+2 GIVN Chénān
+2 SURN TestDynasty
 1 SEX M
 1 BIRT
-2 DATE ABT 1112
+2 DATE 16 SEP 1112
+1 NOTE Age at death: 47 years
 1 FAMC @F1@
 0 @I3@ INDI
-1 NAME Jùnjǐng //
+1 NAME Jùnjǐng /TestDynasty/
+2 GIVN Jùnjǐng
+2 SURN TestDynasty
 1 SEX M
 1 BIRT
-2 DATE ABT 1117
+2 DATE 5 NOV 1117
+1 NOTE Age at death: 58 years
 1 FAMS @F2@
 1 FAMC @F1@
 0 @I4@ INDI
-1 NAME Nánchéng //
+1 NAME Nánchéng /TestDynasty/
+2 GIVN Nánchéng
+2 SURN TestDynasty
 1 SEX M
 1 BIRT
-2 DATE ABT 1130
+2 DATE 23 JAN 1130
+1 NOTE Age at death: 66 years
 1 FAMC @F2@
 0 @F1@ FAM
 1 HUSB @I1@

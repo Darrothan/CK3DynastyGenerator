@@ -13,7 +13,7 @@ from services.children_gen_utils import draw_children_birth_years_exact_k
 """
 This strategy generates only the single surviving line of male heirs.
 """
-def gen_children_mainline(*, fcfg: FertilityConfig, father: Person, end_date: int, rng: random.Random) -> List[Person]:
+def gen_children_mainline(*, fcfg: FertilityConfig, father: Person, end_date: int, rng: random.Random, factory: PersonFactory = None) -> List[Person]:
     children: List[Person] = []
     num_children = sample_key_by_weights(fcfg.num_children_pd, rng)
     num_mainline_sons = sample_key_by_weights(NUM_MAINLINE_CHILD_PD, rng)
@@ -37,8 +37,19 @@ def gen_children_mainline(*, fcfg: FertilityConfig, father: Person, end_date: in
     
     sons_birthdays = sorted(rng.sample(children_birthdays, k=min(num_mainline_sons, len(children_birthdays))))
 
-    non_main_factory = PersonFactory(cfg=SimConfig(mortality=NonMainlineMortilityConfig(), fertility=fcfg), rng=rng)
-    main_factory = PersonFactory(cfg=SimConfig(mortality=MainlineMortalityConfig(), fertility=fcfg), rng=rng)
+    # Create factories with appropriate mortality configs, but preserve culture and dynasty_name
+    non_main_factory = PersonFactory(
+        cfg=SimConfig(mortality=NonMainlineMortilityConfig(), fertility=fcfg),
+        rng=rng,
+        culture=factory.culture if factory else 'chinese',
+        dynasty_name=factory.dynasty_name if factory else None,
+    )
+    main_factory = PersonFactory(
+        cfg=SimConfig(mortality=MainlineMortalityConfig(), fertility=fcfg),
+        rng=rng,
+        culture=factory.culture if factory else 'chinese',
+        dynasty_name=factory.dynasty_name if factory else None,
+    )
     for birthday in sons_birthdays[:-1]:
         if birthday > end_date:
             break

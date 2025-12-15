@@ -42,7 +42,7 @@ def test_gedcom_export():
     os.makedirs('test_exports', exist_ok=True)
     filepath = 'test_exports/test_dynasty.ged'
     
-    result = export_to_gedcom(dynasty, filepath, end_year=end_year)
+    result = export_to_gedcom(dynasty, filepath, end_year=end_year, culture="chinese", dynasty_name="TestDynasty")
     
     assert os.path.exists(result), f"GEDCOM file not created at {result}"
     
@@ -103,7 +103,7 @@ def test_gedcom_with_dynasty_names():
     
     os.makedirs('test_exports', exist_ok=True)
     filepath = 'test_exports/test_names.ged'
-    export_to_gedcom(dynasty, filepath)
+    export_to_gedcom(dynasty, filepath, culture="english", dynasty_name="Smith")
     
     with open(filepath, 'r', encoding='utf-8') as f:
         content = f.read()

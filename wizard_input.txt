@@ -7,4 +7,5 @@ Zhu
 817
 s
 Zhu_interactive_test.ged
+y
 e

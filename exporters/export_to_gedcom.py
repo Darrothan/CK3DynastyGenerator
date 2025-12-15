@@ -2,12 +2,51 @@
 GEDCOM export functionality for dynasty generator.
 
 Exports a generated dynasty to GEDCOM 5.5.1 format with all relevant person data.
+Includes enhanced fields:
+- GIVN/SURN: Split given and surname fields
+- _MARNM: Married name for spouses
+- Detailed date information (DAY MON YEAR format)
+- Age at death notes
+- Full family relationships and marriage dates
 """
 
 from datetime import date
 from collections import defaultdict
-from typing import List, Dict, Set
+from typing import List, Dict, Set, Optional
 from models.person import Person
+from config.other_constants import DAYS_IN_YEAR
+
+
+def convert_absolute_day_to_date(absolute_day: int) -> tuple[int, int, int]:
+    """Convert absolute day (CK3 format) to (year, month, day)."""
+    from config.other_constants import DAYS_IN_MONTH
+    
+    year = (absolute_day - 1) // DAYS_IN_YEAR + 1
+    day_of_year = (absolute_day - 1) % DAYS_IN_YEAR + 1
+    
+    month = 1
+    for dim in DAYS_IN_MONTH:
+        if day_of_year <= dim:
+            break
+        day_of_year -= dim
+        month += 1
+    
+    return year, month, day_of_year
+
+
+def format_gedcom_date(year: Optional[int] = None, month: Optional[int] = None, day: Optional[int] = None) -> Optional[str]:
+    """Format a date for GEDCOM output. Returns format like '11 NOV 1998' or 'ABT 1100'."""
+    if year is None:
+        return None
+    
+    # Format with approximate if we only have year
+    if month is None or day is None:
+        return f"ABT {year}"
+    
+    # Full date format: DAY MON YEAR
+    months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
+    month_name = months[month - 1] if 1 <= month <= 12 else months[0]
+    return f"{day} {month_name} {year}"
 
 
 def collect_people(dynasty: List[List[Person]]) -> List[Person]:
@@ -44,6 +83,8 @@ def export_to_gedcom(
     dynasty: List[List[Person]],
     filepath: str,
     end_year: int = None,
+    culture: str = "chinese",
+    dynasty_name: str = None,
     source: str = "CK3 Dynasty Generator"
 ) -> str:
     """
@@ -62,11 +103,16 @@ def export_to_gedcom(
         dynasty: Dynasty structure to export
         filepath: Path where GEDCOM file will be written
         end_year: If set, exclude deaths beyond this year
+        culture: Culture name for naming conventions (e.g., 'chinese', 'english')
+        dynasty_name: The dynasty surname to propagate to all members
         source: Source identifier for the GEDCOM file
     
     Returns:
         Path to the created GEDCOM file
     """
+    from config.culture_config import get_culture_config
+    
+    culture_cfg = get_culture_config(culture)
     people = collect_people(dynasty)
     
     # Create ID mappings using object id for hashability
@@ -108,32 +154,76 @@ def export_to_gedcom(
         lines = []
         lines.append(f"0 {pid} INDI")
         
+        # Determine surname for this person based on culture conventions
+        # Dynasty members (those with dynasty_name set) always use that surname
+        if person.dynasty_name:
+            surname = person.dynasty_name
+        else:
+            # Non-dynasty members (spouses from outside)
+            # Handle based on culture naming conventions
+            surname = ""
+            
+            # For patrilineal cultures: wives take husband's surname
+            if culture_cfg.wives_take_husband_surname and person.female and person.spouse and person.spouse.dynasty_name:
+                surname = person.spouse.dynasty_name
+            # Otherwise, no surname (no maiden name data stored)
+        
         # NAME field (GEDCOM standard: given /surname/)
         given_name = person.given_name
-        surname = person.dynasty_name or ""
         lines.append(f"1 NAME {given_name} /{surname}/")
+        
+        # GIVN field (Given Name)
+        lines.append(f"2 GIVN {given_name}")
+        
+        # SURN field (Surname)
+        if surname:
+            lines.append(f"2 SURN {surname}")
+        
+        # _MARNM field (Married Name) - for patrilineal cultures where wives took husband's name
+        if culture_cfg.wives_take_husband_surname and person.female and person.spouse and person.spouse.dynasty_name and not person.dynasty_name:
+            # Wife took husband's dynasty name but originally didn't have it
+            lines.append(f"2 _MARNM {person.spouse.dynasty_name}")
         
         # SEX field
         sex = "F" if person.female else "M"
         lines.append(f"1 SEX {sex}")
         
-        # BIRT field
+        # BIRT field (Birth Date)
         if person.birth_year is not None:
             lines.append("1 BIRT")
-            lines.append(f"2 DATE ABT {person.birth_year}")
+            # Use detailed date if available, otherwise just year
+            if person.date_of_birth is not None:
+                year, month, day = convert_absolute_day_to_date(person.date_of_birth)
+                formatted_date = format_gedcom_date(year, month, day)
+            else:
+                formatted_date = format_gedcom_date(person.birth_year)
+            if formatted_date:
+                lines.append(f"2 DATE {formatted_date}")
         
-        # DEAT field (only if within end_year)
+        # DEAT field (Death Date - only if within end_year)
         if person.death_year is not None and (end_year is None or person.death_year <= end_year):
             lines.append("1 DEAT")
-            lines.append(f"2 DATE ABT {person.death_year}")
+            # Use detailed date if available
+            if person.date_of_death is not None:
+                year, month, day = convert_absolute_day_to_date(person.date_of_death)
+                formatted_date = format_gedcom_date(year, month, day)
+            else:
+                formatted_date = format_gedcom_date(person.death_year)
+            if formatted_date:
+                lines.append(f"2 DATE {formatted_date}")
         
-        # MARR field
+        # NOTE field - Age at death
+        if person.birth_year is not None and person.death_year is not None:
+            age_at_death = person.death_year - person.birth_year
+            lines.append(f"1 NOTE Age at death: {age_at_death} years")
+        
+        # MARR field (Marriage Date)
         if person.date_of_marriage is not None:
-            # Convert absolute days to year
-            from config.other_constants import DAYS_IN_YEAR
-            marriage_year = (person.date_of_marriage - 1) // DAYS_IN_YEAR + 1
-            lines.append("1 MARR")
-            lines.append(f"2 DATE ABT {marriage_year}")
+            year, month, day = convert_absolute_day_to_date(person.date_of_marriage)
+            formatted_date = format_gedcom_date(year, month, day)
+            if formatted_date:
+                lines.append("1 MARR")
+                lines.append(f"2 DATE {formatted_date}")
         
         # FAMS field (person as spouse/parent)
         for fid in father_fams_map.get(id(person), []):
@@ -177,6 +267,14 @@ def export_to_gedcom(
         # Add spouse if exists
         if father.spouse:
             output.append(f"1 WIFE {indi_ids[id(father.spouse)]}")
+        
+        # Add marriage date at family level if available
+        if father.date_of_marriage is not None:
+            year, month, day = convert_absolute_day_to_date(father.date_of_marriage)
+            formatted_date = format_gedcom_date(year, month, day)
+            if formatted_date:
+                output.append("1 MARR")
+                output.append(f"2 DATE {formatted_date}")
         
         # Add children
         for child in fam_children[fid]:
