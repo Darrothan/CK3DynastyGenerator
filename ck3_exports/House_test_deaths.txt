@@ -1,0 +1,26 @@
+House_character_1 = {
+	name = "Hàoyǔ"
+	dynasty = House
+	religion = jingxue
+	culture = han
+	867.4.28 = {
+		birth = yes
+	}
+	920.1.2 = {
+		death = yes
+	}
+}
+
+House_character_2 = {
+	name = "Fánháng"
+	dynasty = House
+	religion = jingxue
+	culture = han
+	father = House_character_1
+	890.11.19 = {
+		birth = yes
+	}
+	920.1.2 = {
+		death = yes
+	}
+}

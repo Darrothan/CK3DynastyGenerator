@@ -1,0 +1,53 @@
+testdyn_character_1 = {
+	name = "Fēngníng"
+	dynasty = testdyn_dynasty
+	religion = jingxue
+	culture = english
+	900.4.9 = {
+		birth = yes
+	}
+	954.12.29 = {
+		death = yes
+	}
+}
+
+testdyn_character_2 = {
+	name = "Hángyì"
+	dynasty = testdyn_dynasty
+	religion = jingxue
+	culture = english
+	father = testdyn_character_1
+	916.6.16 = {
+		birth = yes
+	}
+	970.1.2 = {
+		death = yes
+	}
+}
+
+testdyn_character_3 = {
+	name = "Bāngxiāo"
+	dynasty = testdyn_dynasty
+	religion = jingxue
+	culture = english
+	father = testdyn_character_2
+	931.10.24 = {
+		birth = yes
+	}
+	970.1.2 = {
+		death = yes
+	}
+}
+
+testdyn_character_4 = {
+	name = "Tóngyī"
+	female = yes
+	religion = jingxue
+	culture = english
+	932.12.9 = {
+		birth = yes
+	}
+	970.1.2 = {
+		death = yes
+	}
+}

@@ -1,0 +1,21 @@
+Testing_character_1 = {
+	name = "Chéngchéng"
+	dynasty = Testing
+	religion = jingxue
+	culture = han
+	1000.2.10 = {
+		birth = yes
+	}
+}
+
+Testing_character_2 = {
+	name = "Chénjǐng"
+	dynasty = Testing
+	religion = jingxue
+	culture = han
+	father = Testing_character_1
+	1024.2.27 = {
+		birth = yes
+		effect = { add_character_flag = do_not_generate_starting_family }
+	}
+}

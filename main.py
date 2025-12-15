@@ -8,6 +8,7 @@ from services.simulation import generate_dynasty
 from services.dynasty_metrics import calculate_dynasty_stats, print_dynasty_stats, print_dynasty_tree
 from services.name_manager import NameManager
 from exporters.export_to_gedcom import export_to_gedcom
+from exporters.export_to_ck3 import export_to_ck3
 from config.mortality_config import (
     NormalMortalityConfig,
     GenerousMortalityConfig,
@@ -78,6 +79,32 @@ def get_dynasty_name() -> str:
         if name:
             return name
         print("Dynasty name cannot be empty. Please try again.")
+
+
+def get_religion() -> str:
+    """Prompt user to enter the religion for CK3 export."""
+    print("\n--- Religion (for CK3 Export) ---")
+    while True:
+        religion = input("Enter religion code (e.g., 'jingxue', 'catholic', 'daoxue'): ").strip()
+        if religion:
+            return religion
+        print("Religion cannot be empty. Please try again.")
+
+
+def get_ck3_death_choice() -> bool:
+    """Ask user if they want to include death dates for living characters in CK3 export."""
+    print("\n--- CK3 Living Characters ---")
+    print("Include death dates for living characters?")
+    print("(Sets death to one day after simulation end)")
+    
+    while True:
+        choice = input("Include deaths for living characters? (y/n): ").strip().lower()
+        if choice == 'y':
+            return True
+        elif choice == 'n':
+            return False
+        else:
+            print("Please enter 'y' or 'n'.")
 
 
 def get_start_date() -> Tuple[int, int]:
@@ -173,28 +200,97 @@ def get_dynasty_parameters(end_year: int) -> Tuple[int, int, int]:
             print("Please enter valid integer years.")
 
 
-def regenerate_prompt() -> str:
+def main_menu_prompt() -> str:
     """
-    Ask user if they want to save, regenerate, or exit the dynasty.
+    Ask user what they want to do after generation.
     
     Returns:
-        'save' - save the dynasty to GEDCOM
-        'regenerate' - create another dynasty
+        'save' - save GEDCOM and optionally CK3
+        'regen_same' - regenerate with current settings
+        'regen_diff' - regenerate with different settings
         'exit' - exit the program
     """
     while True:
-        choice = input("\nWhat would you like to do? (s = save, r = regenerate, e = exit): ").strip().lower()
-        if choice == "s":
+        choice = input("\nWhat would you like to do? (1 = save, 2 = regen same settings, 3 = regen diff settings, 4 = exit): ").strip()
+        if choice == "1":
             return "save"
-        elif choice == "r":
-            return "regenerate"
-        elif choice == "e":
+        elif choice == "2":
+            return "regen_same"
+        elif choice == "3":
+            return "regen_diff"
+        elif choice == "4":
             return "exit"
         else:
-            print("Please enter 's', 'r', or 'e'.")
+            print("Please enter '1', '2', '3', or '4'.")
 
 
-def get_export_filename(dynasty_name: str) -> str:
+def post_gedcom_prompt() -> str:
+    """
+    Ask user what they want to do after saving GEDCOM.
+    
+    Returns:
+        'save_ck3' - save as CK3 history file
+        'regen_same' - regenerate with current settings
+        'regen_diff' - regenerate with different settings
+        'exit' - exit the program
+    """
+    while True:
+        choice = input("\nWhat would you like to do? (1 = save CK3, 2 = regen same settings, 3 = regen diff settings, 4 = exit): ").strip()
+        if choice == "1":
+            return "save_ck3"
+        elif choice == "2":
+            return "regen_same"
+        elif choice == "3":
+            return "regen_diff"
+        elif choice == "4":
+            return "exit"
+        else:
+            print("Please enter '1', '2', '3', or '4'.")
+
+
+def get_export_filename(dynasty_name: str, format_type: str = "gedcom") -> str:
+    """Prompt user for export filename and ensure directory exists.
+    
+    Args:
+        dynasty_name: Name of the dynasty
+        format_type: Either 'gedcom' or 'ck3'
+    """
+    if format_type == "gedcom":
+        default_name = f"{dynasty_name.replace(' ', '_')}_tree.ged"
+        file_type_desc = "GEDCOM"
+        extension = ".ged"
+        dirname = "gedcom_exports"
+    else:  # ck3
+        default_name = f"{dynasty_name.replace(' ', '_')}_history.txt"
+        file_type_desc = "CK3 History"
+        extension = ".txt"
+        dirname = "ck3_exports"
+    
+    while True:
+        filename = input(f"\nEnter filename to save {file_type_desc} (default: {default_name}): ").strip()
+        if not filename:
+            filename = default_name
+        
+        # Ensure proper extension
+        if not filename.endswith(extension):
+            filename += extension
+        
+        # Create exports directory if it doesn't exist
+        os.makedirs(dirname, exist_ok=True)
+        filepath = os.path.join(dirname, filename)
+        
+        # Check if file exists and ask for confirmation
+        if os.path.exists(filepath):
+            overwrite = input(f"\n'{filepath}' already exists. Overwrite? (y/n): ").strip().lower()
+            if overwrite == 'y':
+                return filepath
+            else:
+                continue
+        else:
+            return filepath
+
+
+def get_export_filename_old(dynasty_name: str) -> str:
     """Prompt user for export filename and ensure directory exists."""
     default_name = f"{dynasty_name.replace(' ', '_')}_tree.ged"
     
@@ -227,18 +323,30 @@ def main():
     print("WELCOME TO THE CK3 DYNASTY GENERATOR")
     print("=" * 80)
     
+    # Get configuration once
+    cfg = get_config_preset()
+    culture = get_culture()
+    dynasty_name = get_dynasty_name()
+    
+    # Get start date (absolute day and extracted year)
+    start_day_absolute, start_year = get_start_date()
+    
+    # Get remaining parameters (birth year, transition years)
+    # Note: end_year is the same as start_year from the selected bookmark/custom date
+    birth_year, male_only_start, normal_start = get_dynasty_parameters(start_year)
+    
     while True:
-        # Get configuration
-        cfg = get_config_preset()
-        culture = get_culture()
-        dynasty_name = get_dynasty_name()
-        
-        # Get start date (absolute day and extracted year)
-        start_day_absolute, start_year = get_start_date()
-        
-        # Get remaining parameters (birth year, transition years)
-        # Note: end_year is the same as start_year from the selected bookmark/custom date
-        birth_year, male_only_start, normal_start = get_dynasty_parameters(start_year)
+        # Store parameters for potential regeneration with same settings
+        params_for_reuse = {
+            'cfg': cfg,
+            'culture': culture,
+            'dynasty_name': dynasty_name,
+            'start_day_absolute': start_day_absolute,
+            'start_year': start_year,
+            'birth_year': birth_year,
+            'male_only_start': male_only_start,
+            'normal_start': normal_start,
+        }
         
         # Convert dates to absolute days for internal use (days since year 1)
         from config.other_constants import DAYS_IN_YEAR, convert_calendar_years_to_days
@@ -266,11 +374,12 @@ def main():
         print_dynasty_stats(stats)
         print_dynasty_tree(dynasty, depth=2)
         
-        # Ask what to do next
-        choice = regenerate_prompt()
+        # Main menu: Ask what to do next
+        choice = main_menu_prompt()
         
         if choice == "save":
-            filepath = get_export_filename(dynasty_name)
+            # Save GEDCOM
+            filepath = get_export_filename(dynasty_name, format_type="gedcom")
             try:
                 export_to_gedcom(dynasty, filepath, end_year=start_year, culture=culture, dynasty_name=dynasty_name)
                 print(f"\n✓ Dynasty saved to: {filepath}")
@@ -278,9 +387,57 @@ def main():
                 import traceback
                 print(f"\n✗ Error saving GEDCOM:")
                 traceback.print_exc()
-        elif choice == "regenerate":
-            print("\nRegenerating dynasty...\n")
+            
+            # After GEDCOM saved, ask what to do next
+            post_choice = post_gedcom_prompt()
+            
+            if post_choice == "save_ck3":
+                religion = get_religion()
+                include_death = get_ck3_death_choice()
+                filepath = get_export_filename(dynasty_name, format_type="ck3")
+                try:
+                    export_to_ck3(dynasty, filepath, dynasty_name, culture, religion, include_death, end_days)
+                    print(f"\n✓ Dynasty saved to: {filepath}")
+                except Exception as e:
+                    import traceback
+                    print(f"\n✗ Error saving CK3:")
+                    traceback.print_exc()
+                # Continue to next prompt
+                post_choice = post_gedcom_prompt()
+            
+            # Handle post-GEDCOM choices (regen_same, regen_diff, exit)
+            if post_choice == "regen_same":
+                print("\nRegenerating dynasty with current settings...\n")
+                # Loop back to generation with same parameters
+                continue
+            elif post_choice == "regen_diff":
+                print("\nRegenerating dynasty with different settings...\n")
+                # Ask for new settings
+                cfg = get_config_preset()
+                culture = get_culture()
+                dynasty_name = get_dynasty_name()
+                start_day_absolute, start_year = get_start_date()
+                birth_year, male_only_start, normal_start = get_dynasty_parameters(start_year)
+                continue
+            elif post_choice == "exit":
+                print("\nThank you for using the CK3 Dynasty Generator!")
+                break
+        
+        elif choice == "regen_same":
+            print("\nRegenerating dynasty with current settings...\n")
+            # Loop back to generation with same parameters
             continue
+        
+        elif choice == "regen_diff":
+            print("\nRegenerating dynasty with different settings...\n")
+            # Ask for new settings
+            cfg = get_config_preset()
+            culture = get_culture()
+            dynasty_name = get_dynasty_name()
+            start_day_absolute, start_year = get_start_date()
+            birth_year, male_only_start, normal_start = get_dynasty_parameters(start_year)
+            continue
+        
         elif choice == "exit":
             print("\nThank you for using the CK3 Dynasty Generator!")
             break

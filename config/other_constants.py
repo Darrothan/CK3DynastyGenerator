@@ -32,9 +32,9 @@ CHILD_BY_MOTHER_AGE_PD = {
     38: 0.0002, 39: 0.0001
 }
 NUM_MAINLINE_CHILD_PD = {
-    1: 0.65,
-    2: 0.25,
-    3: 0.1,
+    1: 0.8,
+    2: 0.1975,
+    3: 0.025,
 }
 MINIMUM_GAP_BETWEEN_SIBLINGS_YEARS = 2
 

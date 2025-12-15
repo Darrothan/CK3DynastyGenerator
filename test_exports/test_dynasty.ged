@@ -20,38 +20,28 @@
 1 NOTE Age at death: 43 years
 1 FAMS @F1@
 0 @I2@ INDI
-1 NAME Chénān /TestDynasty/
-2 GIVN Chénān
-2 SURN TestDynasty
-1 SEX M
-1 BIRT
-2 DATE 16 SEP 1112
-1 NOTE Age at death: 47 years
-1 FAMC @F1@
-0 @I3@ INDI
-1 NAME Jùnjǐng /TestDynasty/
-2 GIVN Jùnjǐng
+1 NAME Jié /TestDynasty/
+2 GIVN Jié
 2 SURN TestDynasty
 1 SEX M
 1 BIRT
 2 DATE 5 NOV 1117
-1 NOTE Age at death: 58 years
+1 NOTE Age at death: 60 years
 1 FAMS @F2@
 1 FAMC @F1@
-0 @I4@ INDI
-1 NAME Nánchéng /TestDynasty/
-2 GIVN Nánchéng
+0 @I3@ INDI
+1 NAME Ānyào /TestDynasty/
+2 GIVN Ānyào
 2 SURN TestDynasty
 1 SEX M
 1 BIRT
-2 DATE 23 JAN 1130
-1 NOTE Age at death: 66 years
+2 DATE 17 FEB 1132
+1 NOTE Age at death: 51 years
 1 FAMC @F2@
 0 @F1@ FAM
 1 HUSB @I1@
 1 CHIL @I2@
-1 CHIL @I3@
 0 @F2@ FAM
-1 HUSB @I3@
-1 CHIL @I4@
+1 HUSB @I2@
+1 CHIL @I3@
 0 TRLR

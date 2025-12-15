@@ -1,7 +1,7 @@
 """
-Culture-specific configuration for name handling and GEDCOM export.
+Culture-specific configuration for name handling and exports.
 
-Defines naming conventions and conventions for each supported culture.
+Defines naming conventions for each supported culture.
 """
 
 from dataclasses import dataclass
@@ -17,29 +17,28 @@ class CultureConfig:
     # False = spouses keep own names or don't take husband's (Chinese, Vietnamese, etc.)
     wives_take_husband_surname: bool
     
-    # Whether to export non-dynasty spouses in GEDCOM
-    # True = include all spouses (patrilineal cultures)
-    # False = only include spouses who are part of dynasty (matrilineal/patronymic cultures)
-    export_non_dynasty_spouses: bool
+    # CK3 culture code (may differ from the culture name used internally)
+    # e.g., "chinese" -> "han" in CK3, but most others map directly
+    ck3_culture_code: str = None  # If None, uses the culture name directly
 
 
 # Culture configurations
 CULTURE_CONFIGS: Dict[str, CultureConfig] = {
     "chinese": CultureConfig(
         wives_take_husband_surname=False,
-        export_non_dynasty_spouses=False,
+        ck3_culture_code="han",
     ),
     "english": CultureConfig(
         wives_take_husband_surname=True,
-        export_non_dynasty_spouses=True,
+        ck3_culture_code="english",
     ),
     "french": CultureConfig(
         wives_take_husband_surname=True,
-        export_non_dynasty_spouses=True,
+        ck3_culture_code="french",
     ),
     "german": CultureConfig(
         wives_take_husband_surname=True,
-        export_non_dynasty_spouses=True,
+        ck3_culture_code="german",
     ),
 }
 
@@ -47,3 +46,9 @@ CULTURE_CONFIGS: Dict[str, CultureConfig] = {
 def get_culture_config(culture: str) -> CultureConfig:
     """Get the configuration for a culture. Defaults to English if not found."""
     return CULTURE_CONFIGS.get(culture, CULTURE_CONFIGS["english"])
+
+
+def get_ck3_culture_code(culture: str) -> str:
+    """Get the CK3 culture code for a culture."""
+    config = get_culture_config(culture)
+    return config.ck3_culture_code or culture

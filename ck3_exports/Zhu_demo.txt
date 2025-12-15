@@ -1,0 +1,27 @@
+Zhu_character_1 = {
+	name = "Hàoqiān"
+	dynasty = Zhu
+	religion = jingxue
+	culture = han
+	867.12.14 = {
+		birth = yes
+	}
+	900.1.2 = {
+		death = yes
+	}
+}
+
+Zhu_character_2 = {
+	name = "Héngjùn"
+	dynasty = Zhu
+	religion = jingxue
+	culture = han
+	father = Zhu_character_1
+	886.11.25 = {
+		birth = yes
+		effect = { add_character_flag = do_not_generate_starting_family }
+	}
+	900.1.2 = {
+		death = yes
+	}
+}
