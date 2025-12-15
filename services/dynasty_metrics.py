@@ -35,6 +35,7 @@ def calculate_dynasty_stats(dynasty: List[List[Person]], end_date: int) -> dict:
         "founder_name": founder_name,
         "young_males_count": 0,
         "max_age_gap_overall": 0,
+        "total_alive_at_end": 0,
         "generations": [],
     }
     
@@ -58,6 +59,7 @@ def calculate_dynasty_stats(dynasty: List[List[Person]], end_date: int) -> dict:
             "avg_death_year": 0,
             "mainline_count": sum(1 for p in generation if p.part_of_dynasty),
             "skip_generation_count": sum(1 for p in generation if p.skip_generation),
+            "alive_at_end": sum(1 for p in generation if p.is_living_at_end),
         }
         
         if generation:
@@ -87,6 +89,9 @@ def calculate_dynasty_stats(dynasty: List[List[Person]], end_date: int) -> dict:
         gen_stats["young_males_count"] = young_males_in_gen
         stats["young_males_count"] += young_males_in_gen
         
+        # Count total alive at end
+        stats["total_alive_at_end"] += gen_stats["alive_at_end"]
+        
         stats["generations"].append(gen_stats)
         total_births += len(generation)
         total_deaths += len([p for p in generation if p.death_year < 10000])
@@ -106,26 +111,27 @@ def print_dynasty_stats(stats: dict):
     print(f"\nFounder: {stats['founder_name']}")
     print(f"Total Generations: {stats['total_generations']}")
     print(f"Total Dynasty Members: {stats['total_people']}")
+    print(f"Still Alive at End Date: {stats['total_alive_at_end']}")
     print(f"Total Births: {stats['total_births']}")
     print(f"Total Deaths: {stats['total_deaths']}")
     print(f"Young Males (< age 30): {stats['young_males_count']}")
     print(f"Largest Age Gap in Generation: {stats['max_age_gap_overall']} years")
     
     print("\n" + "-" * 80)
-    print(f"{'Gen':<5} {'Size':<8} {'Males':<8} {'Females':<10} {'Mainline':<12} {'Avg Life':<12} {'Age Gap':<10} {'Young M':<8}")
+    print(f"{'Gen':<5} {'Size':<8} {'Alive':<8} {'Males':<8} {'Females':<10} {'Mainline':<12} {'Avg Life':<12} {'Age Gap':<10}")
     print("-" * 80)
     
     for gen_info in stats["generations"]:
         gen = gen_info["generation"]
         size = gen_info["count"]
+        alive = gen_info["alive_at_end"]
         males = gen_info["males"]
         females = gen_info["females"]
         mainline = gen_info["mainline_count"]
         avg_life = gen_info["avg_lifespan"]
         age_gap = gen_info["max_age_gap"]
-        young_males = gen_info["young_males_count"]
         
-        print(f"{gen:<5} {size:<8} {males:<8} {females:<10} {mainline:<12} {avg_life:<12.1f} {age_gap:<10} {young_males:<8}")
+        print(f"{gen:<5} {size:<8} {alive:<8} {males:<8} {females:<10} {mainline:<12} {avg_life:<12.1f} {age_gap:<10}")
     
     print("=" * 80)
 

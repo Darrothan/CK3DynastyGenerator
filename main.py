@@ -80,16 +80,80 @@ def get_dynasty_name() -> str:
         print("Dynasty name cannot be empty. Please try again.")
 
 
-def get_dynasty_parameters() -> Tuple[int, int, int, int]:
-    """Collect start year, end year, and strategy transition dates from user."""
+def get_start_date() -> Tuple[int, int]:
+    """
+    Let user choose a CK3 bookmark start date or manually enter month/day.
+    Returns tuple of (absolute_day, year) extracted from the chosen date.
+    """
+    from config.other_constants import (
+        CK3_867_START_DAY, CK3_1066_START_DAY, CK3_1178_START_DAY,
+        convert_calendar_years_to_days, DAYS_IN_MONTH, DAYS_IN_YEAR
+    )
+    
+    print("\n--- Simulation Start Date ---")
+    print("CK3 Bookmark Dates:")
+    print("1. 867.1.1  (CK3 start)")
+    print("2. 1066.9.15 (Norman Conquest)")
+    print("3. 1178.10.1 (Crusades era)")
+    print("4. Custom (enter year, month, day)")
+    
+    while True:
+        choice = input("\nChoose start date (1-4): ").strip()
+        
+        if choice == "1":
+            year = 867
+            abs_day = CK3_867_START_DAY
+            return abs_day, year
+        elif choice == "2":
+            year = 1066
+            abs_day = CK3_1066_START_DAY
+            return abs_day, year
+        elif choice == "3":
+            year = 1178
+            abs_day = CK3_1178_START_DAY
+            return abs_day, year
+        elif choice == "4":
+            # Custom date input
+            try:
+                year = int(input("Enter year (e.g., 1100): "))
+                month = int(input("Enter month (1-12, default 1): ") or "1")
+                day = int(input("Enter day (1-31, default 1): ") or "1")
+                
+                # Validate month and day
+                if not (1 <= month <= 12):
+                    print("Month must be between 1 and 12.")
+                    continue
+                if not (1 <= day <= DAYS_IN_MONTH[month - 1]):
+                    print(f"Day must be between 1 and {DAYS_IN_MONTH[month - 1]} for month {month}.")
+                    continue
+                
+                # Calculate absolute day
+                # Days since year 1 + days up to the month + day
+                abs_day = convert_calendar_years_to_days(year) + sum(DAYS_IN_MONTH[:month - 1]) + day - 1
+                return abs_day, year
+            except ValueError:
+                print("Please enter valid numbers.")
+                continue
+        else:
+            print("Please choose 1, 2, 3, or 4.")
+
+
+def get_dynasty_parameters(end_year: int) -> Tuple[int, int, int]:
+    """Collect patriarch birth year and strategy transition dates from user.
+    
+    Args:
+        end_year: The simulation end year (from start date selection)
+    
+    Returns:
+        Tuple of (birth_year, male_only_start_year, normal_start_year)
+    """
     print("\n--- Dynasty Time Parameters ---")
     
     while True:
         try:
             birth_year = int(input("Enter patriarch birth year (e.g., 1100): "))
-            end_year = int(input("Enter simulation end year (e.g., 1200): "))
             if birth_year >= end_year:
-                print("Birth year must be before end year. Try again.")
+                print(f"Birth year must be before simulation end year ({end_year}). Try again.")
                 continue
             
             print("\nStrategy transitions:")
@@ -104,7 +168,7 @@ def get_dynasty_parameters() -> Tuple[int, int, int, int]:
                 print("Dates must be in order. Try again.")
                 continue
             
-            return birth_year, end_year, male_only_start, normal_start
+            return birth_year, male_only_start, normal_start
         except ValueError:
             print("Please enter valid integer years.")
 
@@ -168,15 +232,21 @@ def main():
         cfg = get_config_preset()
         culture = get_culture()
         dynasty_name = get_dynasty_name()
-        birth_year, end_year, male_only_start, normal_start = get_dynasty_parameters()
+        
+        # Get start date (absolute day and extracted year)
+        start_day_absolute, start_year = get_start_date()
+        
+        # Get remaining parameters (birth year, transition years)
+        # Note: end_year is the same as start_year from the selected bookmark/custom date
+        birth_year, male_only_start, normal_start = get_dynasty_parameters(start_year)
         
         # Convert dates to absolute days for internal use (days since year 1)
         from config.other_constants import DAYS_IN_YEAR, convert_calendar_years_to_days
         male_only_start_days = convert_calendar_years_to_days(male_only_start)
         normal_start_days = convert_calendar_years_to_days(normal_start)
-        end_days = convert_calendar_years_to_days(end_year)
+        end_days = start_day_absolute  # Use the selected start date as the end date for simulation
         
-        print(f"\nGenerating {dynasty_name} dynasty starting {birth_year} and ending {end_year}...")
+        print(f"\nGenerating {dynasty_name} dynasty from {birth_year} to {start_year}...")
         
         # Generate the dynasty
         rng = random.Random()
@@ -202,7 +272,7 @@ def main():
         if choice == "save":
             filepath = get_export_filename(dynasty_name)
             try:
-                export_to_gedcom(dynasty, filepath, end_year=end_year, culture=culture, dynasty_name=dynasty_name)
+                export_to_gedcom(dynasty, filepath, end_year=start_year, culture=culture, dynasty_name=dynasty_name)
                 print(f"\n✓ Dynasty saved to: {filepath}")
             except Exception as e:
                 import traceback
