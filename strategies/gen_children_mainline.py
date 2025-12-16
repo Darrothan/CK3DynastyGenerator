@@ -11,7 +11,7 @@ from services.utils import sample_key_by_weights
 from services.children_gen_utils import draw_children_birth_years_exact_k
 
 """
-This strategy generates only the single surviving line of male heirs.
+This strategy generates only the single surviving line of male heirs. This should also NOT generate mothers/wives.
 """
 def gen_children_mainline(*, fcfg: FertilityConfig, father: Person, end_date: int, rng: random.Random, factory: PersonFactory = None) -> List[Person]:
     children: List[Person] = []

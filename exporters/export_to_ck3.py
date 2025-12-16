@@ -118,26 +118,33 @@ def export_to_ck3(
     character_map = {}
     people_seen = set()
     char_num = 1
+    wife_num = 1
     
     # First pass: collect all dynasty members
     for generation in dynasty:
         for person in generation:
             people_seen.add(id(person))
-            character_map[id(person)] = (person, char_num)
+            character_map[id(person)] = (person, char_num, None)  # (person, char_num, wife_num)
             char_num += 1
     
-    # Second pass: collect spouses not already in dynasty
+    # Second pass: collect spouses not already in dynasty (these are wives)
     for generation in dynasty:
         for person in generation:
             if person.spouse and id(person.spouse) not in people_seen:
                 people_seen.add(id(person.spouse))
-                character_map[id(person.spouse)] = (person.spouse, char_num)
+                character_map[id(person.spouse)] = (person.spouse, char_num, wife_num)  # Mark as wife
                 char_num += 1
+                wife_num += 1
     
     # Collect all people with their character IDs (lowercase)
     people_with_ids = []
-    for person_id, (person, char_num) in character_map.items():
-        character_id = f"{dynasty_name.lower()}_character_{char_num}"
+    for person_id, (person, char_num, wife_num_val) in character_map.items():
+        if wife_num_val is not None:
+            # This is a wife - use special naming
+            character_id = f"{dynasty_name.lower()}_wife_{wife_num_val}"
+        else:
+            # Regular dynasty member
+            character_id = f"{dynasty_name.lower()}_character_{char_num}"
         people_with_ids.append((person, character_id, char_num))
     
     # Generate CK3 entries
@@ -165,14 +172,20 @@ def export_to_ck3(
         
         # Father (optional)
         if person.father and id(person.father) in character_map:
-            father_person, father_num = character_map[id(person.father)]
-            father_id = f"{dynasty_name.lower()}_character_{father_num}"
+            father_person, father_num, father_wife_num = character_map[id(person.father)]
+            if father_wife_num is not None:
+                father_id = f"{dynasty_name.lower()}_wife_{father_wife_num}"
+            else:
+                father_id = f"{dynasty_name.lower()}_character_{father_num}"
             lines.append(f"\tfather = {father_id}")
         
         # Mother (optional)
         if person.mother and id(person.mother) in character_map:
-            mother_person, mother_num = character_map[id(person.mother)]
-            mother_id = f"{dynasty_name.lower()}_character_{mother_num}"
+            mother_person, mother_num, mother_wife_num = character_map[id(person.mother)]
+            if mother_wife_num is not None:
+                mother_id = f"{dynasty_name.lower()}_wife_{mother_wife_num}"
+            else:
+                mother_id = f"{dynasty_name.lower()}_character_{mother_num}"
             lines.append(f"\tmother = {mother_id}")
         
         # Birth event (required)
@@ -196,8 +209,11 @@ def export_to_ck3(
         
         # Marriage event (optional)
         if person.spouse and person.date_of_marriage and id(person.spouse) in character_map:
-            spouse_person, spouse_num = character_map[id(person.spouse)]
-            spouse_id = f"{dynasty_name.lower()}_character_{spouse_num}"
+            spouse_person, spouse_num, spouse_wife_num = character_map[id(person.spouse)]
+            if spouse_wife_num is not None:
+                spouse_id = f"{dynasty_name.lower()}_wife_{spouse_wife_num}"
+            else:
+                spouse_id = f"{dynasty_name.lower()}_character_{spouse_num}"
             
             marriage_year, marriage_month, marriage_day = convert_absolute_day_to_date(person.date_of_marriage)
             marriage_date = format_ck3_date(marriage_year, marriage_month, marriage_day)

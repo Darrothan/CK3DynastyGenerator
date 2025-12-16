@@ -39,7 +39,7 @@ testdyn_character_3 = {
 	}
 }
 
-testdyn_character_4 = {
+testdyn_wife_1 = {
 	name = "Tóngyī"
 	female = yes
 	religion = jingxue

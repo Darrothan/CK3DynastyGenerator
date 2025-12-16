@@ -139,11 +139,16 @@ def export_to_gedcom(
     mother_fams_map: Dict[int, List[str]] = defaultdict(list)  # id(person) -> [fid]
     
     for person_id, fid in fam_ids.items():
+        father = next(p for p in people if id(p) == person_id)
         father_fams_map[person_id].append(fid)
+        
+        # Add mother to this family if the father has a spouse
+        if father.spouse:
+            mother_fams_map[id(father.spouse)].append(fid)
+        
+        # Add children to this family
         for child in fam_children[fid]:
             child_famc_map[id(child)].append(fid)
-            if child.spouse:
-                mother_fams_map[id(child.spouse)].append(fid)
     
     # Generate INDI blocks
     indi_blocks: Dict[str, List[str]] = {}

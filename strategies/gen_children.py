@@ -44,10 +44,10 @@ def gen_children(*, cfg: SimConfig, father: Person, end_date: int, rng: random.R
         if birthday > end_date:
             break
         if rng.random() < CHANCE_OF_SON:
-            children.append(child_factory.create_male(birth_date=birthday, end_date=end_date, father=father))
+            children.append(child_factory.create_male(birth_date=birthday, end_date=end_date, father=father, mother=mother))
         else:
             if not male_only:
-                children.append(child_factory.create_female(birth_date=birthday, end_date=end_date, father=father))
+                children.append(child_factory.create_female(birth_date=birthday, end_date=end_date, father=father, mother=mother))
     
     # Record marriage dates
     if children:

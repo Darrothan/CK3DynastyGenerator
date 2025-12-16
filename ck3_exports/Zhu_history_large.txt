@@ -1,0 +1,1583 @@
+zhu_character_1 = {
+	name = "Héngwěi"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	598.9.19 = {
+		birth = yes
+	}
+	625.1.28 = {
+		death = yes
+	}
+}
+
+zhu_character_2 = {
+	name = "Tóngrén"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_1
+	620.11.23 = {
+		birth = yes
+	}
+	665.6.12 = {
+		death = yes
+	}
+}
+
+zhu_character_3 = {
+	name = "Míngjūn"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_2
+	634.1.18 = {
+		birth = yes
+	}
+	681.10.26 = {
+		death = yes
+	}
+}
+
+zhu_character_4 = {
+	name = "Jiànyì"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_3
+	650.1.1 = {
+		birth = yes
+	}
+	703.4.11 = {
+		death = yes
+	}
+}
+
+zhu_character_5 = {
+	name = "Yáojūn"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_4
+	671.12.8 = {
+		birth = yes
+	}
+	724.11.3 = {
+		death = yes
+	}
+}
+
+zhu_character_6 = {
+	name = "Héng"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_5
+	688.11.15 = {
+		birth = yes
+	}
+	736.9.29 = {
+		death = yes
+	}
+}
+
+zhu_character_7 = {
+	name = "Yìxī"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_6
+	718.2.1 = {
+		birth = yes
+	}
+	773.8.18 = {
+		death = yes
+	}
+}
+
+zhu_character_8 = {
+	name = "Guóqí"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_7
+	730.2.4 = {
+		birth = yes
+	}
+	761.5.4 = {
+		death = yes
+	}
+}
+
+zhu_character_9 = {
+	name = "Shuòzhèn"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_7
+	738.9.24 = {
+		birth = yes
+	}
+	758.9.12 = {
+		add_spouse = zhu_wife_1
+	}
+	802.8.20 = {
+		death = yes
+	}
+}
+
+zhu_character_10 = {
+	name = "Tiānmíng"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_9
+	mother = zhu_wife_1
+	759.6.17 = {
+		birth = yes
+	}
+	779.10.3 = {
+		add_spouse = zhu_wife_2
+	}
+	816.12.19 = {
+		death = yes
+	}
+}
+
+zhu_character_11 = {
+	name = "Réndé"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_9
+	mother = zhu_wife_1
+	764.8.28 = {
+		birth = yes
+	}
+	786.5.22 = {
+		add_spouse = zhu_wife_3
+	}
+	832.3.13 = {
+		death = yes
+	}
+}
+
+zhu_character_12 = {
+	name = "Péngchéng"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_10
+	mother = zhu_wife_2
+	780.2.22 = {
+		birth = yes
+	}
+	796.5.9 = {
+		add_spouse = zhu_wife_4
+	}
+	834.12.3 = {
+		death = yes
+	}
+}
+
+zhu_character_13 = {
+	name = "Ānhóng"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_10
+	mother = zhu_wife_2
+	784.3.24 = {
+		birth = yes
+	}
+	802.7.10 = {
+		add_spouse = zhu_wife_5
+	}
+	849.9.24 = {
+		death = yes
+	}
+}
+
+zhu_character_14 = {
+	name = "Chénchén"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_10
+	mother = zhu_wife_2
+	787.11.8 = {
+		birth = yes
+	}
+	806.10.31 = {
+		add_spouse = zhu_wife_6
+	}
+	807.10.13 = {
+		death = yes
+	}
+}
+
+zhu_character_15 = {
+	name = "Hóngfán"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_11
+	mother = zhu_wife_3
+	787.10.29 = {
+		birth = yes
+	}
+	806.12.13 = {
+		add_spouse = zhu_wife_7
+	}
+	855.7.25 = {
+		death = yes
+	}
+}
+
+zhu_character_16 = {
+	name = "Kǎichāo"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_11
+	mother = zhu_wife_3
+	790.6.8 = {
+		birth = yes
+	}
+	809.8.25 = {
+		add_spouse = zhu_wife_8
+	}
+	857.7.10 = {
+		death = yes
+	}
+}
+
+zhu_character_17 = {
+	name = "Mínghuī"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_12
+	mother = zhu_wife_4
+	797.8.23 = {
+		birth = yes
+	}
+	817.1.10 = {
+		add_spouse = zhu_wife_9
+	}
+	835.2.2 = {
+		death = yes
+	}
+}
+
+zhu_character_18 = {
+	name = "Yìbó"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_12
+	mother = zhu_wife_4
+	806.1.11 = {
+		birth = yes
+	}
+	829.12.15 = {
+		add_spouse = zhu_wife_10
+	}
+	856.7.12 = {
+		death = yes
+	}
+}
+
+zhu_character_19 = {
+	name = "Zhuóhóng"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_12
+	mother = zhu_wife_4
+	808.8.21 = {
+		birth = yes
+	}
+	823.8.12 = {
+		add_spouse = zhu_wife_11
+	}
+	852.1.28 = {
+		death = yes
+	}
+}
+
+zhu_character_20 = {
+	name = "Sōnghuī"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_13
+	mother = zhu_wife_5
+	803.7.14 = {
+		birth = yes
+	}
+	834.12.16 = {
+		add_spouse = zhu_wife_12
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_character_21 = {
+	name = "Bófēng"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_13
+	mother = zhu_wife_5
+	805.7.15 = {
+		birth = yes
+	}
+	822.6.9 = {
+		add_spouse = zhu_wife_13
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_character_22 = {
+	name = "Huīqiáng"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_13
+	mother = zhu_wife_5
+	808.11.26 = {
+		birth = yes
+	}
+	824.6.14 = {
+		add_spouse = zhu_wife_14
+	}
+	849.11.7 = {
+		death = yes
+	}
+}
+
+zhu_character_23 = {
+	name = "Yèjūn"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_13
+	mother = zhu_wife_5
+	810.12.12 = {
+		birth = yes
+	}
+	828.10.30 = {
+		add_spouse = zhu_wife_15
+	}
+	864.4.13 = {
+		death = yes
+	}
+}
+
+zhu_character_24 = {
+	name = "Chénghuán"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_13
+	mother = zhu_wife_5
+	812.12.22 = {
+		birth = yes
+	}
+	839.1.6 = {
+		add_spouse = zhu_wife_16
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_character_25 = {
+	name = "Yuèyuè"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_14
+	mother = zhu_wife_6
+	807.3.19 = {
+		birth = yes
+	}
+	828.2.3 = {
+		add_spouse = zhu_wife_17
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_character_26 = {
+	name = "Bófān"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_15
+	mother = zhu_wife_7
+	807.8.13 = {
+		birth = yes
+	}
+	829.8.3 = {
+		add_spouse = zhu_wife_18
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_character_27 = {
+	name = "Yǒng"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_16
+	mother = zhu_wife_8
+	810.4.20 = {
+		birth = yes
+	}
+	826.6.29 = {
+		add_spouse = zhu_wife_19
+	}
+	838.2.11 = {
+		death = yes
+	}
+}
+
+zhu_character_28 = {
+	name = "Sōnghàn"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_17
+	mother = zhu_wife_9
+	818.3.27 = {
+		birth = yes
+	}
+	838.5.20 = {
+		add_spouse = zhu_wife_20
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_character_29 = {
+	name = "Fánhuán"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_18
+	mother = zhu_wife_10
+	830.7.3 = {
+		birth = yes
+	}
+	846.12.9 = {
+		add_spouse = zhu_wife_21
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_character_30 = {
+	name = "Chéngyì"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_19
+	mother = zhu_wife_11
+	824.3.11 = {
+		birth = yes
+	}
+	843.7.9 = {
+		add_spouse = zhu_wife_22
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_character_31 = {
+	name = "Wēifēng"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_19
+	mother = zhu_wife_11
+	831.11.5 = {
+		birth = yes
+	}
+	851.8.13 = {
+		add_spouse = zhu_wife_23
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_character_32 = {
+	name = "Huīténg"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_20
+	mother = zhu_wife_12
+	835.11.13 = {
+		birth = yes
+	}
+	852.2.9 = {
+		add_spouse = zhu_wife_24
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_character_33 = {
+	name = "Tóngyì"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_21
+	mother = zhu_wife_13
+	823.12.28 = {
+		birth = yes
+	}
+	839.8.30 = {
+		add_spouse = zhu_wife_25
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_character_34 = {
+	name = "Quánshuò"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_21
+	mother = zhu_wife_13
+	830.8.6 = {
+		birth = yes
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_character_35 = {
+	name = "Jiànjié"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_22
+	mother = zhu_wife_14
+	825.6.3 = {
+		birth = yes
+	}
+	844.12.14 = {
+		add_spouse = zhu_wife_27
+	}
+	864.9.9 = {
+		death = yes
+	}
+}
+
+zhu_character_36 = {
+	name = "Zhìtāo"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_22
+	mother = zhu_wife_14
+	829.10.1 = {
+		birth = yes
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_character_37 = {
+	name = "Bīnxiáng"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_22
+	mother = zhu_wife_14
+	832.9.22 = {
+		birth = yes
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_character_38 = {
+	name = "Chuānhóng"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_23
+	mother = zhu_wife_15
+	829.1.26 = {
+		birth = yes
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_character_39 = {
+	name = "Kǎirán"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_23
+	mother = zhu_wife_15
+	831.4.24 = {
+		birth = yes
+	}
+	858.6.2 = {
+		add_spouse = zhu_wife_31
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_character_40 = {
+	name = "Lèxuān"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_24
+	mother = zhu_wife_16
+	840.12.6 = {
+		birth = yes
+		effect = { add_character_flag = do_not_generate_starting_family }
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_character_41 = {
+	name = "Hóng"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_25
+	mother = zhu_wife_17
+	829.3.19 = {
+		birth = yes
+	}
+	848.10.14 = {
+		add_spouse = zhu_wife_32
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_character_42 = {
+	name = "Jūnjiā"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_25
+	mother = zhu_wife_17
+	833.8.18 = {
+		birth = yes
+	}
+	862.12.17 = {
+		death = yes
+	}
+}
+
+zhu_character_43 = {
+	name = "Wényàn"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_26
+	mother = zhu_wife_18
+	830.4.28 = {
+		birth = yes
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_character_44 = {
+	name = "Hángxuān"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_27
+	mother = zhu_wife_19
+	827.2.23 = {
+		birth = yes
+	}
+	852.4.26 = {
+		add_spouse = zhu_wife_35
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_character_45 = {
+	name = "Fēngxīn"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_28
+	mother = zhu_wife_20
+	839.6.2 = {
+		birth = yes
+		effect = { add_character_flag = do_not_generate_starting_family }
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_character_46 = {
+	name = "Bāngyuè"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_28
+	mother = zhu_wife_20
+	841.12.6 = {
+		birth = yes
+		effect = { add_character_flag = do_not_generate_starting_family }
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_character_47 = {
+	name = "Jùnfān"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_29
+	mother = zhu_wife_21
+	847.1.30 = {
+		birth = yes
+		effect = { add_character_flag = do_not_generate_starting_family }
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_character_48 = {
+	name = "Qípéng"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_29
+	mother = zhu_wife_21
+	849.6.16 = {
+		birth = yes
+		effect = { add_character_flag = do_not_generate_starting_family }
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_character_49 = {
+	name = "Hóngtiān"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_29
+	mother = zhu_wife_21
+	855.4.18 = {
+		birth = yes
+		effect = { add_character_flag = do_not_generate_starting_family }
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_character_50 = {
+	name = "Péng"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_29
+	mother = zhu_wife_21
+	857.7.22 = {
+		birth = yes
+		effect = { add_character_flag = do_not_generate_starting_family }
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_character_51 = {
+	name = "Wěiyuǎn"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_30
+	mother = zhu_wife_22
+	844.5.31 = {
+		birth = yes
+		effect = { add_character_flag = do_not_generate_starting_family }
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_character_52 = {
+	name = "Yǒng"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_31
+	mother = zhu_wife_23
+	852.11.20 = {
+		birth = yes
+		effect = { add_character_flag = do_not_generate_starting_family }
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_character_53 = {
+	name = "Yìyì"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_31
+	mother = zhu_wife_23
+	866.10.13 = {
+		birth = yes
+		effect = { add_character_flag = do_not_generate_starting_family }
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_character_54 = {
+	name = "Qíjiā"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_32
+	mother = zhu_wife_24
+	853.8.15 = {
+		birth = yes
+		effect = { add_character_flag = do_not_generate_starting_family }
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_character_55 = {
+	name = "Qiángtiān"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_32
+	mother = zhu_wife_24
+	856.3.16 = {
+		birth = yes
+		effect = { add_character_flag = do_not_generate_starting_family }
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_character_56 = {
+	name = "Yuè"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_33
+	mother = zhu_wife_25
+	840.3.16 = {
+		birth = yes
+		effect = { add_character_flag = do_not_generate_starting_family }
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_character_57 = {
+	name = "Jùntiān"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_33
+	mother = zhu_wife_25
+	842.10.22 = {
+		birth = yes
+		effect = { add_character_flag = do_not_generate_starting_family }
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_character_58 = {
+	name = "Jiànchéng"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_35
+	mother = zhu_wife_27
+	845.8.21 = {
+		birth = yes
+		effect = { add_character_flag = do_not_generate_starting_family }
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_character_59 = {
+	name = "Ziháng"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_35
+	mother = zhu_wife_27
+	852.2.13 = {
+		birth = yes
+		effect = { add_character_flag = do_not_generate_starting_family }
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_character_60 = {
+	name = "Hóngníng"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_35
+	mother = zhu_wife_27
+	860.9.5 = {
+		birth = yes
+		effect = { add_character_flag = do_not_generate_starting_family }
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_character_61 = {
+	name = "Hàoyì"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_39
+	mother = zhu_wife_31
+	859.12.15 = {
+		birth = yes
+		effect = { add_character_flag = do_not_generate_starting_family }
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_character_62 = {
+	name = "Chénbīn"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_41
+	mother = zhu_wife_32
+	849.2.20 = {
+		birth = yes
+		effect = { add_character_flag = do_not_generate_starting_family }
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_character_63 = {
+	name = "Qīngdé"
+	dynasty = zhu_dynasty
+	religion = jingxue
+	culture = han
+	father = zhu_character_44
+	mother = zhu_wife_35
+	853.5.30 = {
+		birth = yes
+		effect = { add_character_flag = do_not_generate_starting_family }
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_wife_1 = {
+	name = "Xīlù"
+	female = yes
+	religion = jingxue
+	culture = han
+	741.1.19 = {
+		birth = yes
+	}
+	758.9.12 = {
+		add_spouse = zhu_character_9
+	}
+	808.4.9 = {
+		death = yes
+	}
+}
+
+zhu_wife_2 = {
+	name = "Tóngzé"
+	female = yes
+	religion = jingxue
+	culture = han
+	763.2.20 = {
+		birth = yes
+	}
+	779.10.3 = {
+		add_spouse = zhu_character_10
+	}
+	815.6.9 = {
+		death = yes
+	}
+}
+
+zhu_wife_3 = {
+	name = "Měihán"
+	female = yes
+	religion = jingxue
+	culture = han
+	766.8.11 = {
+		birth = yes
+	}
+	786.5.22 = {
+		add_spouse = zhu_character_11
+	}
+	835.8.27 = {
+		death = yes
+	}
+}
+
+zhu_wife_4 = {
+	name = "Yīyào"
+	female = yes
+	religion = jingxue
+	culture = han
+	783.12.29 = {
+		birth = yes
+	}
+	796.5.9 = {
+		add_spouse = zhu_character_12
+	}
+	843.9.22 = {
+		death = yes
+	}
+}
+
+zhu_wife_5 = {
+	name = "Xīntíng"
+	female = yes
+	religion = jingxue
+	culture = han
+	788.5.29 = {
+		birth = yes
+	}
+	802.7.10 = {
+		add_spouse = zhu_character_13
+	}
+	855.3.25 = {
+		death = yes
+	}
+}
+
+zhu_wife_6 = {
+	name = "Lèyáo"
+	female = yes
+	religion = jingxue
+	culture = han
+	791.3.2 = {
+		birth = yes
+	}
+	806.10.31 = {
+		add_spouse = zhu_character_14
+	}
+	834.2.4 = {
+		death = yes
+	}
+}
+
+zhu_wife_7 = {
+	name = "Hángyì"
+	female = yes
+	religion = jingxue
+	culture = han
+	789.5.22 = {
+		birth = yes
+	}
+	806.12.13 = {
+		add_spouse = zhu_character_15
+	}
+	847.3.25 = {
+		death = yes
+	}
+}
+
+zhu_wife_8 = {
+	name = "Rányuǎn"
+	female = yes
+	religion = jingxue
+	culture = han
+	792.1.23 = {
+		birth = yes
+	}
+	809.8.25 = {
+		add_spouse = zhu_character_16
+	}
+	856.5.7 = {
+		death = yes
+	}
+}
+
+zhu_wife_9 = {
+	name = "Zhélíng"
+	female = yes
+	religion = jingxue
+	culture = han
+	800.1.21 = {
+		birth = yes
+	}
+	817.1.10 = {
+		add_spouse = zhu_character_17
+	}
+	852.12.6 = {
+		death = yes
+	}
+}
+
+zhu_wife_10 = {
+	name = "Yánfēi"
+	female = yes
+	religion = jingxue
+	culture = han
+	810.2.15 = {
+		birth = yes
+	}
+	829.12.15 = {
+		add_spouse = zhu_character_18
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_wife_11 = {
+	name = "Wēiróng"
+	female = yes
+	religion = jingxue
+	culture = han
+	809.2.20 = {
+		birth = yes
+	}
+	823.8.12 = {
+		add_spouse = zhu_character_19
+	}
+	853.11.26 = {
+		death = yes
+	}
+}
+
+zhu_wife_12 = {
+	name = "Jǐnlíng"
+	female = yes
+	religion = jingxue
+	culture = han
+	808.6.12 = {
+		birth = yes
+	}
+	834.12.16 = {
+		add_spouse = zhu_character_20
+	}
+	835.12.21 = {
+		death = yes
+	}
+}
+
+zhu_wife_13 = {
+	name = "Yìjié"
+	female = yes
+	religion = jingxue
+	culture = han
+	809.10.1 = {
+		birth = yes
+	}
+	822.6.9 = {
+		add_spouse = zhu_character_21
+	}
+	865.7.13 = {
+		death = yes
+	}
+}
+
+zhu_wife_14 = {
+	name = "Yán"
+	female = yes
+	religion = jingxue
+	culture = han
+	809.10.4 = {
+		birth = yes
+	}
+	824.6.14 = {
+		add_spouse = zhu_character_22
+	}
+	865.8.27 = {
+		death = yes
+	}
+}
+
+zhu_wife_15 = {
+	name = "Lányán"
+	female = yes
+	religion = jingxue
+	culture = han
+	813.7.2 = {
+		birth = yes
+	}
+	828.10.30 = {
+		add_spouse = zhu_character_23
+	}
+	865.4.13 = {
+		death = yes
+	}
+}
+
+zhu_wife_16 = {
+	name = "Xiáfán"
+	female = yes
+	religion = jingxue
+	culture = han
+	815.9.10 = {
+		birth = yes
+	}
+	839.1.6 = {
+		add_spouse = zhu_character_24
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_wife_17 = {
+	name = "Xuánchén"
+	female = yes
+	religion = jingxue
+	culture = han
+	810.12.15 = {
+		birth = yes
+	}
+	828.2.3 = {
+		add_spouse = zhu_character_25
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_wife_18 = {
+	name = "Yùjiā"
+	female = yes
+	religion = jingxue
+	culture = han
+	809.9.18 = {
+		birth = yes
+	}
+	829.8.3 = {
+		add_spouse = zhu_character_26
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_wife_19 = {
+	name = "Nízhì"
+	female = yes
+	religion = jingxue
+	culture = han
+	811.1.19 = {
+		birth = yes
+	}
+	826.6.29 = {
+		add_spouse = zhu_character_27
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_wife_20 = {
+	name = "Línghóng"
+	female = yes
+	religion = jingxue
+	culture = han
+	820.2.4 = {
+		birth = yes
+	}
+	838.5.20 = {
+		add_spouse = zhu_character_28
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_wife_21 = {
+	name = "Jiéyuàn"
+	female = yes
+	religion = jingxue
+	culture = han
+	831.1.12 = {
+		birth = yes
+	}
+	846.12.9 = {
+		add_spouse = zhu_character_29
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_wife_22 = {
+	name = "Wèiyì"
+	female = yes
+	religion = jingxue
+	culture = han
+	827.5.31 = {
+		birth = yes
+	}
+	843.7.9 = {
+		add_spouse = zhu_character_30
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_wife_23 = {
+	name = "Zhéníng"
+	female = yes
+	religion = jingxue
+	culture = han
+	833.1.15 = {
+		birth = yes
+	}
+	851.8.13 = {
+		add_spouse = zhu_character_31
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_wife_24 = {
+	name = "Wēifēi"
+	female = yes
+	religion = jingxue
+	culture = han
+	835.1.18 = {
+		birth = yes
+	}
+	852.2.9 = {
+		add_spouse = zhu_character_32
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_wife_25 = {
+	name = "Kělǎng"
+	female = yes
+	religion = jingxue
+	culture = han
+	825.11.28 = {
+		birth = yes
+	}
+	839.8.30 = {
+		add_spouse = zhu_character_33
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_wife_26 = {
+	name = "Jiāyíng"
+	female = yes
+	religion = jingxue
+	culture = han
+	830.9.4 = {
+		birth = yes
+	}
+	866.10.24 = {
+		death = yes
+	}
+}
+
+zhu_wife_27 = {
+	name = "Zhéníng"
+	female = yes
+	religion = jingxue
+	culture = han
+	828.3.5 = {
+		birth = yes
+	}
+	844.12.14 = {
+		add_spouse = zhu_character_35
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_wife_28 = {
+	name = "Tíng"
+	female = yes
+	religion = jingxue
+	culture = han
+	831.1.9 = {
+		birth = yes
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_wife_29 = {
+	name = "Yǔ"
+	female = yes
+	religion = jingxue
+	culture = han
+	835.12.15 = {
+		birth = yes
+	}
+	858.8.13 = {
+		death = yes
+	}
+}
+
+zhu_wife_30 = {
+	name = "Yānzi"
+	female = yes
+	religion = jingxue
+	culture = han
+	832.2.24 = {
+		birth = yes
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_wife_31 = {
+	name = "Jīngyùn"
+	female = yes
+	religion = jingxue
+	culture = han
+	834.5.12 = {
+		birth = yes
+	}
+	858.6.2 = {
+		add_spouse = zhu_character_39
+	}
+	863.6.7 = {
+		death = yes
+	}
+}
+
+zhu_wife_32 = {
+	name = "Xuānjìng"
+	female = yes
+	religion = jingxue
+	culture = han
+	829.7.18 = {
+		birth = yes
+	}
+	848.10.14 = {
+		add_spouse = zhu_character_41
+	}
+	856.8.29 = {
+		death = yes
+	}
+}
+
+zhu_wife_33 = {
+	name = "Hànrén"
+	female = yes
+	religion = jingxue
+	culture = han
+	836.6.5 = {
+		birth = yes
+	}
+	858.6.17 = {
+		death = yes
+	}
+}
+
+zhu_wife_34 = {
+	name = "Jùnkě"
+	female = yes
+	religion = jingxue
+	culture = han
+	831.6.11 = {
+		birth = yes
+	}
+	867.1.2 = {
+		death = yes
+	}
+}
+
+zhu_wife_35 = {
+	name = "Yuè"
+	female = yes
+	religion = jingxue
+	culture = han
+	828.9.19 = {
+		birth = yes
+	}
+	852.4.26 = {
+		add_spouse = zhu_character_44
+	}
+	865.3.28 = {
+		death = yes
+	}
+}

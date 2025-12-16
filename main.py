@@ -25,30 +25,40 @@ import random
 import os
 
 
-def get_config_preset() -> SimConfig:
-    """Present user with preset config options."""
-    print("\n--- Dynasty Configuration Preset ---")
-    print("1. Normal (balanced mortality & fertility)")
-    print("2. Generous (high fertility, low mortality)")
-    print("3. Realistic (high early mortality, moderate fertility)")
+def get_mortality_config():
+    """Prompt user to select a mortality configuration."""
+    print("\n--- Mortality Configuration ---")
+    print("1. Normal (25% early deaths)")
+    print("2. Generous (10% early deaths)")
+    print("3. Realistic (45% early deaths)")
     
     while True:
-        choice = input("\nSelect preset (1-3): ").strip()
+        choice = input("\nSelect mortality (1-3): ").strip()
         if choice == "1":
-            return SimConfig(
-                mortality=NormalMortalityConfig(),
-                fertility=NormalFertilityConfig(),
-            )
+            return NormalMortalityConfig()
         elif choice == "2":
-            return SimConfig(
-                mortality=GenerousMortalityConfig(),
-                fertility=GenerousFertilityConfig(),
-            )
+            return GenerousMortalityConfig()
         elif choice == "3":
-            return SimConfig(
-                mortality=RealisticMortalityConfig(),
-                fertility=RealisticFertilityConfig(),
-            )
+            return RealisticMortalityConfig()
+        else:
+            print("Invalid choice. Please enter 1, 2, or 3.")
+
+
+def get_fertility_config():
+    """Prompt user to select a fertility configuration."""
+    print("\n--- Fertility Configuration ---")
+    print("1. Normal (~4.6 children per family)")
+    print("2. Generous (~5.7 children per family)")
+    print("3. Realistic (~3 children per family)")
+    
+    while True:
+        choice = input("\nSelect fertility (1-3): ").strip()
+        if choice == "1":
+            return NormalFertilityConfig()
+        elif choice == "2":
+            return GenerousFertilityConfig()
+        elif choice == "3":
+            return RealisticFertilityConfig()
         else:
             print("Invalid choice. Please enter 1, 2, or 3.")
 
@@ -323,8 +333,11 @@ def main():
     print("WELCOME TO THE CK3 DYNASTY GENERATOR")
     print("=" * 80)
     
-    # Get configuration once
-    cfg = get_config_preset()
+    # Get configuration - separate prompts for mortality and fertility
+    mortality = get_mortality_config()
+    fertility = get_fertility_config()
+    cfg = SimConfig(mortality=mortality, fertility=fertility)
+    
     culture = get_culture()
     dynasty_name = get_dynasty_name()
     
@@ -413,7 +426,9 @@ def main():
             elif post_choice == "regen_diff":
                 print("\nRegenerating dynasty with different settings...\n")
                 # Ask for new settings
-                cfg = get_config_preset()
+                mortality = get_mortality_config()
+                fertility = get_fertility_config()
+                cfg = SimConfig(mortality=mortality, fertility=fertility)
                 culture = get_culture()
                 dynasty_name = get_dynasty_name()
                 start_day_absolute, start_year = get_start_date()
@@ -431,7 +446,9 @@ def main():
         elif choice == "regen_diff":
             print("\nRegenerating dynasty with different settings...\n")
             # Ask for new settings
-            cfg = get_config_preset()
+            mortality = get_mortality_config()
+            fertility = get_fertility_config()
+            cfg = SimConfig(mortality=mortality, fertility=fertility)
             culture = get_culture()
             dynasty_name = get_dynasty_name()
             start_day_absolute, start_year = get_start_date()

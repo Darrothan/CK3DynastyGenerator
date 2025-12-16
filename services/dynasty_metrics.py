@@ -11,6 +11,28 @@ from config.other_constants import DAYS_IN_YEAR
 from services.utils import convert_calendar_days_to_years
 
 
+def has_living_descendant(person: Person) -> bool:
+    """
+    Check if a person has at least one living descendant (child) at the end of the simulation.
+    This does NOT count the person themselves - only their actual descendants.
+    
+    Args:
+        person: The person to check
+    
+    Returns:
+        True if the person has at least one living descendant, False otherwise
+    """
+    # Check if any child is alive
+    for child in person.children:
+        if child.is_living_at_end:
+            return True
+        # Check if this child has living descendants
+        if has_living_descendant(child):
+            return True
+    
+    return False
+
+
 def calculate_dynasty_stats(dynasty: List[List[Person]], end_date: int) -> dict:
     """
     Calculate comprehensive statistics from the dynasty structure.
@@ -57,7 +79,6 @@ def calculate_dynasty_stats(dynasty: List[List[Person]], end_date: int) -> dict:
             "avg_lifespan": 0,
             "avg_birth_year": 0,
             "avg_death_year": 0,
-            "mainline_count": sum(1 for p in generation if p.part_of_dynasty),
             "skip_generation_count": sum(1 for p in generation if p.skip_generation),
             "alive_at_end": sum(1 for p in generation if p.is_living_at_end),
         }
@@ -72,14 +93,18 @@ def calculate_dynasty_stats(dynasty: List[List[Person]], end_date: int) -> dict:
         gen_stats["total_children"] = total_children
         gen_stats["avg_children"] = total_children / len(generation) if generation else 0
         
-        # Calculate largest age gap within this generation
+        # Calculate largest age gap within this generation (span from oldest to youngest)
         if len(generation) > 1:
             birth_years = sorted([p.birth_year for p in generation])
-            max_gap = max(birth_years[i+1] - birth_years[i] for i in range(len(birth_years) - 1))
+            max_gap = birth_years[-1] - birth_years[0]  # Oldest to youngest
             gen_stats["max_age_gap"] = max_gap
             stats["max_age_gap_overall"] = max(stats["max_age_gap_overall"], max_gap)
         else:
             gen_stats["max_age_gap"] = 0
+        
+        # Count surviving branches (people with at least one living descendant)
+        surviving_branches = sum(1 for p in generation if has_living_descendant(p))
+        gen_stats["surviving_branches"] = surviving_branches
         
         # Count young males in this generation
         young_males_in_gen = sum(
@@ -118,7 +143,7 @@ def print_dynasty_stats(stats: dict):
     print(f"Largest Age Gap in Generation: {stats['max_age_gap_overall']} years")
     
     print("\n" + "-" * 80)
-    print(f"{'Gen':<5} {'Size':<8} {'Alive':<8} {'Males':<8} {'Females':<10} {'Mainline':<12} {'Avg Life':<12} {'Age Gap':<10}")
+    print(f"{'Gen':<5} {'Size':<8} {'Alive':<8} {'Males':<8} {'Females':<10} {'Branches':<10} {'Avg Life':<12} {'Age Gap':<10}")
     print("-" * 80)
     
     for gen_info in stats["generations"]:
@@ -127,11 +152,11 @@ def print_dynasty_stats(stats: dict):
         alive = gen_info["alive_at_end"]
         males = gen_info["males"]
         females = gen_info["females"]
-        mainline = gen_info["mainline_count"]
+        branches = gen_info["surviving_branches"]
         avg_life = gen_info["avg_lifespan"]
         age_gap = gen_info["max_age_gap"]
         
-        print(f"{gen:<5} {size:<8} {alive:<8} {males:<8} {females:<10} {mainline:<12} {avg_life:<12.1f} {age_gap:<10}")
+        print(f"{gen:<5} {size:<8} {alive:<8} {males:<8} {females:<10} {branches:<10} {avg_life:<12.1f} {age_gap:<10}")
     
     print("=" * 80)
 

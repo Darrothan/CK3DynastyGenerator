@@ -1,19 +1,19 @@
-House_character_1 = {
+house_character_1 = {
 	name = "Hàoyǔ"
-	dynasty = House
+	dynasty = house_dynasty
 	religion = jingxue
-	culture = han
+	culture = english
 	867.4.28 = {
 		birth = yes
 	}
 }
 
-House_character_2 = {
+house_character_2 = {
 	name = "Fánháng"
-	dynasty = House
+	dynasty = house_dynasty
 	religion = jingxue
-	culture = han
-	father = House_character_1
+	culture = english
+	father = house_character_1
 	890.11.19 = {
 		birth = yes
 	}

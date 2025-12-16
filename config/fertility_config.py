@@ -6,7 +6,7 @@ from dataclasses import dataclass, field
 class FertilityConfig:
     num_children_pd: dict[int, float]
 
-
+# Average number of children per family: ~5.7
 @dataclass(frozen=True)
 class GenerousFertilityConfig(FertilityConfig):
     num_children_pd: dict[int, float] = field(default_factory=lambda: {
@@ -17,7 +17,7 @@ class GenerousFertilityConfig(FertilityConfig):
         7: 0.10,
     })
 
-
+# Average number of children per family: ~4.6
 @dataclass(frozen=True)
 class NormalFertilityConfig(FertilityConfig):
     num_children_pd: dict[int, float] = field(default_factory=lambda: {
@@ -28,7 +28,7 @@ class NormalFertilityConfig(FertilityConfig):
         6: 0.10,
     })
 
-
+# Average number of children per family: ~3
 @dataclass(frozen=True)
 class RealisticFertilityConfig(FertilityConfig):
     num_children_pd: dict[int, float] = field(default_factory=lambda: {
